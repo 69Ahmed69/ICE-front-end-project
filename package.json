@@ -8,19 +8,33 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --fix",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "server": "json-server --watch src/back-end.json --port 5000"
   },
   "dependencies": {
+    "-": "^0.0.1",
+    "@headlessui/vue": "^1.7.23",
+    "@heroicons/vue": "^2.2.0",
+    "axios": "^1.7.7",
+    "js-cookies": "^1.0.4",
+    "json-server": "^1.0.0-beta.3",
     "pinia": "^2.2.6",
-    "vue": "^3.5.12"
+    "primeicons": "^7.0.0",
+    "save": "^2.9.0",
+    "vue": "^3.5.12",
+    "vue-router": "^4.4.5",
+    "vue-toastification": "^2.0.0-rc.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",
     "@vitejs/plugin-vue": "^5.1.4",
     "@vue/eslint-config-prettier": "^10.1.0",
+    "autoprefixer": "^10.4.20",
     "eslint": "^9.14.0",
     "eslint-plugin-vue": "^9.30.0",
+    "postcss": "^8.4.49",
     "prettier": "^3.3.3",
+    "tailwindcss": "^3.4.15",
     "vite": "^5.4.10",
     "vite-plugin-vue-devtools": "^7.5.4"
   }

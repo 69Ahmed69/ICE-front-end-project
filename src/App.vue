@@ -1,55 +1,24 @@
 <script setup>
-import { ref } from 'vue'
+import { RouterView } from 'vue-router'
+import { usePrefrencesStore } from '@/stores/user'
 
-const name = ref('John Doe')
-const status = ref('active')
-const tasks = ref(['Task1', 'Task2', 'Task3'])
-const newTask = ref('')
+const preferncesStore = usePrefrencesStore()
 
-const toggleStatus = () => {
-  if (status.value === 'active') {
-    status.value = 'pending'
-  } else if (status.value === 'pending') {
-    status.value = 'inactive'
-  } else {
-    status.value = 'active'
-  }
+const lang = sessionStorage.getItem('lang')
+if (!lang) {
+  lang == 'English'
+} else {
+  preferncesStore.setLanguage(lang)
 }
-
-const addTask = () => {
-  if (newTask.value.trim() !== '') {
-    tasks.value.push(newTask.value)
-    newTask.value = ''
-  }
-}
-const deleteTask = (index) => {
-  tasks.value.splice(index, 1)
+const curr = sessionStorage.getItem('curr')
+if (!curr) {
+  curr == 'USD'
+} else {
+  preferncesStore.setCurrency(curr)
 }
 </script>
 
 <template>
-  <br />
-  <h1>{{ name }}</h1>
-  <p v-if="status === 'active'">User is active</p>
-  <p v-else-if="status === 'pending'">User is pending</p>
-  <p v-else>User is inactive</p>
-  <br />
-
-  <form @submit.prevent="addTask">
-    <label for="newTask">Add Task</label><br />
-    <input type="text" id="newTask" name="newTask" v-model="newTask" /><br />
-    <button type="submit">Submit</button>
-  </form>
-
-  <h3>Tasks:</h3>
-  <ul>
-    <li v-for="(task, index) in tasks" :key="task">
-      <span>{{ task }}</span>
-      <button @click="deleteTask(index)">X</button>
-    </li>
-  </ul>
-  <br />
-  <button v-on:click="toggleStatus">Change Status</button>
+  <RouterView />
 </template>
-
 <style scoped></style>

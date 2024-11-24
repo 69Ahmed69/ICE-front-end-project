@@ -1,0 +1,296 @@
+{
+  "courses": [
+    {
+      "id": "1",
+      "title": "Introduction to Data Analysis Techniques",
+      "category": "Data Science",
+      "price": 60,
+      "discount": 0,
+      "description": "Learn the foundational techniques for analyzing and visualizing data, including statistics, data wrangling, and basic machine learning.",
+      "instructor": "Judea Pearl",
+      "rating": 4.3,
+      "ratings": 1574,
+      "students": 12568,
+      "level": 0,
+      "duration": 16,
+      "created": 1642512000000,
+      "learning_points": [
+        "Master the fundamentals of data cleaning and preprocessing.",
+        "Learn to apply statistical techniques for data analysis and interpretation.",
+        "Gain proficiency in using data visualization tools to communicate insights effectively."
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Basics of Ethical Hacking",
+      "category": "Cyber Security",
+      "price": 39,
+      "discount": 9,
+      "description": "Explore the tools and techniques ethical hackers use to identify vulnerabilities and secure systems against cyber threats.",
+      "instructor": "Elliot Anderson",
+      "rating": 4.9,
+      "ratings": 42,
+      "students": 256,
+      "level": 2,
+      "duration": 37,
+      "created": 1673625600000,
+      "learning_points": [
+        "Understand the core principles of network security and vulnerabilities.",
+        "Develop skills in penetration testing and vulnerability assessment.",
+        "Learn to identify and mitigate security threats to protect systems and data."
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Mastering HTML, CSS, and JavaScript",
+      "category": "Front-end Web",
+      "price": 19,
+      "discount": 0,
+      "description": "Build stunning, responsive websites by mastering the core technologies of front-end web development.",
+      "instructor": "Henni Ahmed",
+      "rating": 5.0,
+      "ratings": 64215,
+      "students": 324217,
+      "level": 0,
+      "duration": 18,
+      "created": 1703539200000,
+      "learning_points": [
+        "Build interactive web pages using HTML, CSS, and JavaScript.",
+        "Learn to design responsive and user-friendly web interfaces.",
+        "Master front-end development frameworks like React or Angular."
+      ]
+    },
+    {
+      "id": "4",
+      "title": "Database Design and SQL Fundamentals",
+      "category": "Databases",
+      "price": 29,
+      "discount": 5,
+      "description": "Understand how to design robust databases and write efficient SQL queries to manage and retrieve data.",
+      "instructor": "Lahiani Sawsen",
+      "rating": 2.4,
+      "ratings": 304,
+      "students": 325,
+      "level": 1,
+      "duration": 8,
+      "created": 1632288000000,
+      "learning_points": [
+        "Understand the principles of database design and normalization.",
+        "Learn to write efficient SQL queries to retrieve, manipulate, and analyze data.",
+        "Gain skills in database administration and optimization."
+      ]
+    },
+    {
+      "id": "5",
+      "title": "Build Your First 3D Game in Java",
+      "category": "Game Dev",
+      "price": 24,
+      "discount": 0,
+      "description": "Dive into game development by designing and coding a complete 3D game from scratch using beginner-friendly tools.",
+      "instructor": "Markus Persson",
+      "rating": 4.6,
+      "ratings": 56,
+      "students": 56,
+      "level": 2,
+      "duration": 45,
+      "created": 1683091200000,
+      "learning_points": [
+        "Learn the basics of 3D game development concepts and techniques.",
+        "Use Java and a game engine like LibGDX to create interactive 3D games.",
+        "Understand game physics, lighting, and collision detection."
+      ]
+    },
+    {
+      "id": "6",
+      "title": "Networking Essentials for Beginners",
+      "category": "Networks",
+      "price": 9,
+      "discount": 9,
+      "description": "Discover how computer networks operate, from the basics of IP addressing to configuring simple networks.",
+      "instructor": "Network Chuck",
+      "rating": 4.7,
+      "ratings": 3204,
+      "students": 54741,
+      "level": 1,
+      "duration": 4,
+      "created": 1648252800000,
+      "learning_points": [
+        "Learn the fundamentals of computer networking and network protocols.",
+        "Understand network topologies, addressing, and routing concepts.",
+        "Gain practical skills in network configuration and troubleshooting."
+      ]
+    },
+    {
+      "id": "7",
+      "title": "Create Native Android Apps with Kotlin",
+      "category": "Mobile Dev",
+      "price": 69,
+      "discount": 39,
+      "description": "Learn how to create beautiful, cross-platform mobile apps using Kotlin and Jetpack programming language.",
+      "instructor": "Ouzeri Sohayb",
+      "rating": 4.8,
+      "ratings": 8745,
+      "students": 98462,
+      "level": 1,
+      "duration": 26,
+      "created": 1667001600000,
+      "learning_points": [
+        "Learn the Kotlin programming language for Android app development.",
+        "Master the Android SDK and Android Studio IDE.",
+        "Build high-performance and user-friendly Android apps."
+      ]
+    },
+    {
+      "id": "8",
+      "title": "Beautiful Desktop Apps with Python and QT",
+      "category": "Software Dev",
+      "price": 44,
+      "discount": 5,
+      "description": "Build responsive, efficient and cross-platform desktop application with the Python programming language and QT framework.",
+      "instructor": "Cherif Zahar",
+      "rating": 4.0,
+      "ratings": 134,
+      "students": 1328,
+      "level": 1,
+      "duration": 15,
+      "created": 1698883200000,
+      "learning_points": [
+        "Learn to design and develop visually appealing desktop applications using Python.",
+        "Master the PyQt framework for creating user-friendly interfaces.",
+        "Understand how to integrate database functionality into your applications."
+      ]
+    },
+    {
+      "id": "9",
+      "category": "Back-end Web",
+      "title": "RESTful APIs with Node.js",
+      "price": 16,
+      "discount": 0,
+      "description": "Build scalable and efficient back-end systems by creating RESTful APIs with Node.js and Express.js.",
+      "instructor": "Linus Torvalds",
+      "rating": 3.5,
+      "ratings": 47,
+      "students": 169,
+      "level": 0,
+      "duration": 9,
+      "created": 1656105600000,
+      "learning_points": [
+        "Gain a deep understanding of RESTful API design principles.",
+        "Learn to build efficient and scalable Node.js-based APIs.",
+        "Master data modeling, routing, and error handling in Node.js."
+      ]
+    },
+    {
+      "id": "10",
+      "category": "AI",
+      "title": "Machine Learning from Zero to Hero",
+      "price": 99,
+      "discount": 59,
+      "description": "Get started with machine learning by building simple models and understanding the concepts behind AI algorithms.",
+      "instructor": "Elon Musk",
+      "rating": 4.2,
+      "ratings": 671,
+      "students": 7841,
+      "level": 2,
+      "duration": 38,
+      "created": 1625798400000,
+      "learning_points": [
+        "Learn the fundamentals of machine learning and data science.",
+        "Master popular machine learning algorithms like linear regression and decision trees.",
+        "Gain hands-on experience building predictive models and solving real-world problems."
+      ]
+    }
+  ],
+  "categories": [
+    {
+      "name": "Data Science",
+      "courses": 45
+    },
+    {
+      "name": "Cyber Security",
+      "courses": 69
+    },
+    {
+      "name": "Front-end Web",
+      "courses": 21
+    },
+    {
+      "name": "Databases",
+      "courses": 74
+    },
+    {
+      "name": "Game Development",
+      "courses": 31
+    },
+    {
+      "name": "Networks",
+      "courses": 11
+    },
+    {
+      "name": "Mobile Development",
+      "courses": 36
+    },
+    {
+      "name": "Software Development",
+      "courses": 13
+    },
+    {
+      "name": "Back-end Web",
+      "courses": 89
+    },
+    {
+      "name": "Business Intelligence",
+      "courses": 6
+    },
+    {
+      "name": "Artificial Intelligence",
+      "courses": 24
+    },
+    {
+      "name": "Mathematics",
+      "courses": 14
+    }
+  ],
+  "instructors": [
+    {
+      "id": 1,
+      "first_name": "Ahmed",
+      "last_name": "Henni",
+      "sepcialty": "Front-end Designer",
+      "rating": 4.9,
+      "students": 203124
+    },
+    {
+      "id": 2,
+      "first_name": "Cherif",
+      "last_name": "Zahar",
+      "sepcialty": "Senior Developer",
+      "rating": 4.1,
+      "students": 69
+    },
+    {
+      "id": 3,
+      "first_name": "Elliot",
+      "last_name": "Anderson",
+      "sepcialty": "Penetration Tester",
+      "rating": 4.7,
+      "students": 9542
+    },
+    {
+      "id": 4,
+      "first_name": "Ouzeri",
+      "last_name": "Sohayb",
+      "sepcialty": "Android Developper",
+      "rating": 4.8,
+      "students": 69742
+    },
+    {
+      "id": 5,
+      "first_name": "Markus",
+      "last_name": "Perrson",
+      "sepcialty": "3D Game Developper",
+      "rating": 4.5,
+      "students": 24356
+    }
+  ]
+}
