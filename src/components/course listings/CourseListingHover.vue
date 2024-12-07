@@ -12,6 +12,7 @@ import IceButton from '../ui elements/IceButton.vue'
 
 defineProps({
   course: Object,
+  instructor: Object,
   index: {
     type: Number,
     default: 1,
@@ -49,40 +50,47 @@ const isFilled = ref(false)
 function toggleHeart() {
   isFilled.value = !isFilled.value
 }
+function daysLeft(discountEnd) {
+  const today = new Date()
+  const endDate = new Date(discountEnd)
+  const timeDifference = endDate - today
+  const days = Math.ceil(timeDifference / (1000 * 60 * 60 * 24))
+  return days > 0 ? `${days} days left at this price!!` : ''
+}
 </script>
 
 <template>
   <div
-    :class="`bg-white pt-6 pb-10 border-2 border-tertiary flex flex-col rounded-3xl shadow-md p-4`"
+    :class="`bg-white pt-2 lg:pt-6 pb-4 lg:pb-10 border-2 border-tertiary flex flex-col rounded-3xl shadow-md p-2 lg:p-4`"
     class="transition-shadow duration-300 ease-out hover:shadow-xl space-y-4"
   >
     <!-- Category -->
-    <div class="text-sm font-medium mb-2">
-      <span :class="`${category_bg} ${category_text} px-2 py-1 text-xs rounded-full`">
+    <div class="text-xs lg:text-sm font-medium mb-2">
+      <span :class="`${category_bg} ${category_text} px-1 lg:px-2 py-1 text-xs rounded-full`">
         {{ course.category }}
       </span>
     </div>
 
     <!-- Title -->
-    <h3 class="text-base font-primary font-semibold text-font mb-2 line-clamp-2">
+    <h3 class="text-xs lg:text-base font-primary font-semibold text-font mb-2 line-clamp-2">
       {{ course.title }}
     </h3>
 
     <!-- Instructor and Rating -->
-    <div class="flex items-center justify-between text-sm mb-2">
+    <div class="flex items-center justify-between text-xs lg:text-sm mb-2">
       <div class="flex items-center gap-2">
         <img
-          src="../../assets/img/instructor_avatar.png"
+          :src="instructor.image"
           alt="Instructor Avatar"
-          class="w-8 h-8 rounded-full"
+          class="size-5 lg:size-8 rounded-full object-cover"
         />
         <span class="font-primary font-medium text-gray_2">
-          {{ course.instructor }}
+          {{ instructor.firstName }} {{ instructor.lastName }}
         </span>
       </div>
-      <div class="flex items-center gap-1">
-        <img src="../../../public/favicon.ico" alt="Star Icon" class="w-5 h-5" />
-        <span class="text-gray_1 font-primary text-base font-bold">
+      <div class="flex items-center gap-1 text-xs lg:text-base">
+        <img src="../../../public/favicon.ico" alt="Star Icon" class="w-4 lg:w-5" />
+        <span class="text-gray_1 font-primary font-bold">
           {{ course.rating }}
         </span>
         <span class="text-gray_3 font-primary"> ({{ course.ratings }}) </span>
@@ -91,16 +99,16 @@ function toggleHeart() {
 
     <!-- Students, Level, and Duration -->
     <div class="flex justify-between text-xs font-primary flex-wrap">
-      <div class="flex items-center gap-1">
+      <div class="flex items-center lg:gap-1">
         <UserIcon class="size-5 text-secondary" />
         <span class="text-gray_1">{{ formatStudentsCount(course.students) }}</span>
         <span class="text-gray_3">students</span>
       </div>
-      <div class="flex items-center gap-1">
+      <div class="flex items-center lg:gap-1">
         <ChartBarIcon class="size-5 text-danger" />
         <span class="text-gray_1">{{ textifyLevel(course.level) }}</span>
       </div>
-      <div class="flex items-center gap-1">
+      <div class="flex items-center lg:gap-1">
         <ClockIcon class="size-5 text-success" />
         <span class="text-gray_1">{{ course.duration }} hours</span>
       </div>
@@ -108,11 +116,15 @@ function toggleHeart() {
 
     <!-- Price and Heart -->
     <div class="flex justify-between items-center mb-2">
-      <div class="text-lg text-primary font-primary">
-        <span v-if="course.discount > 0" class="line-through text-gray_3">
+      <div class="text-sm lg:text-lg text-primary font-primary">
+        <span
+          v-if="course.discount > 0 && daysLeft(course.discountEnd) != ''"
+          class="line-through text-gray_3"
+        >
           ${{ course.price }}
         </span>
-        <span v-if="course.price - course.discount > 0">
+        <span v-if="daysLeft(course.discountEnd) == ''">${{ course.price }}</span>
+        <span v-else-if="course.price - course.discount > 0">
           ${{ course.price - course.discount }}
         </span>
         <span v-else>FREE</span>
@@ -123,8 +135,8 @@ function toggleHeart() {
       >
         <HeartIcon
           :class="[
-            'size-5 cursor-pointer transition-all duration-300',
-            isFilled ? 'text-danger fill-danger' : 'text-gray-500',
+            'size-4 lg:size-5 cursor-pointer transition-all duration-300',
+            isFilled ? 'text-danger fill-danger' : 'text-gray_3',
           ]"
         />
       </button>
@@ -132,21 +144,21 @@ function toggleHeart() {
 
     <!-- What You'll Learn -->
     <div class="mb-2">
-      <h4 class="text-sm font-semibold text-font mb-1">What you'll learn</h4>
-      <ul class="text-sm text-wrap text-gray_3 space-y-1">
+      <h4 class="text-xs lg:text-sm font-semibold text-font mb-1">What you'll learn</h4>
+      <ul class="text-xs lg:text-sm text-wrap text-gray_3 space-y-1">
         <li
-          v-for="(item, i) in course.learning_points.slice(0, 3)"
+          v-for="(item, i) in course.learningPoints.slice(0, 3)"
           :key="i"
           class="flex items-center space-x-2"
         >
-          <CheckIcon class="size-4 text-success" />
+          <CheckIcon class="size-3 lg:size-4 text-success" />
           <span>{{ item }}</span>
         </li>
       </ul>
     </div>
 
     <!-- Buttons -->
-    <div class="flex flex-col gap-2 mt-auto">
+    <div class="flex flex-col gap-1 lg:gap-2 mt-auto">
       <IceButton
         class="w-full"
         :priority="1"

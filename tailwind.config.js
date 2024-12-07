@@ -18,7 +18,7 @@ export default {
         gray_1: '#3b444a',
         gray_2: 'rgba(59, 68, 74, 0.7)',
         gray_3: '#79a2a4',
-        gray_4: 'rgba(59, 68, 74, 0.15)',
+        gray_4: 'rgba(59, 68, 74, 0.07)',
         background: '#f2fdff',
         danger: '#ff3b30',
         warning: '#ffcc00',

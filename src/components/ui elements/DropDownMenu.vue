@@ -59,7 +59,7 @@ watch(
     <div>
       <MenuButton
         :class="[
-          'inline-flex w-full justify-center gap-x-1.5 px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset rounded-3xl',
+          'inline-flex w-full justify-center gap-x-1.5 px-3 py-0 lg:py-2 text-xs lg:text-sm font-semibold shadow-sm ring-1 ring-inset rounded-3xl',
           transparent
             ? 'bg-transparent text-gray_3 ring-transparent'
             : 'bg-background text-font  hover:bg-fourth ring-tertiary',
@@ -87,7 +87,7 @@ watch(
                 @click="handleSelect(type, item.label)"
                 :class="[
                   active ? 'bg-fourth text-font outline-none' : 'text-gray_2',
-                  'block w-full px-4 py-2 text-left text-sm rounded-3xl',
+                  'block w-full px-4 py-2 text-left text-xs lg:text-sm rounded-3xl',
                 ]"
               >
                 {{ item.label }}

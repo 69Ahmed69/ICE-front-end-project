@@ -9,21 +9,44 @@ const props = defineProps({
     type: Number,
     default: 4,
   },
+  title: {
+    type: String,
+    defualt: 'Recently Added Courses',
+  },
+  titlePosition: {
+    type: String,
+    defualt: 'center',
+  },
 })
 
 const state = reactive({
   courses: [],
+  instructors: [],
   isLoading: true,
 })
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
+const fetchInstructors = async (courses) => {
+  const instructorPromises = courses.map(async (course) => {
+    try {
+      const response = await axios.get(`/api/instructors/${course.instructor}`)
+      return response.data
+    } catch (error) {
+      console.error(`Error fetching instructor for course ${course.id}: `, error)
+      return null
+    }
+  })
+  return Promise.all(instructorPromises)
+}
+
 onMounted(async () => {
   try {
-    // Simulated lag
     await delay(3000)
     const response = await axios.get('/api/courses')
     state.courses = response.data
+
+    state.instructors = await fetchInstructors(state.courses)
   } catch (error) {
     console.error('Error fetching courses: ', error)
   } finally {
@@ -45,31 +68,38 @@ const recentCourses = computed(() => {
     .sort((a, b) => new Date(b.created) - new Date(a.created))
     .slice(0, props.limit)
 })
+
+const findInstructor = (targetId) => {
+  return state.instructors.find((instructor) => instructor.id == targetId)
+}
 </script>
 
 <template>
-  <section class="bg-white px-10 py-20 gap-4 mx-24 rounded-3xl">
-    <div class="container-xl lg:container m-auto">
-      <h2 class="text-4xl font-primary font-bold text-font mb-12 text-center">
-        Recently added courses.
-      </h2>
-      <div v-if="state.isLoading">
-        <LoadingAnimation />
-      </div>
-      <div
-        v-else
-        class="grid grid-cols-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6 max-w-7xl mx-auto px-4"
-      >
-        <CourseListing
-          v-for="(course, i) in recentCourses"
-          :key="course.id"
-          :index="i"
-          :course="course"
-          :category_bg="colors[i % colors.length].bg_color"
-          :category_text="colors[i % colors.length].icon_color"
-          class="h-full"
-        />
-      </div>
+  <section class="px-8 lg:px-20 py-8 lg:py-16 rounded-3xl">
+    <h2
+      :class="[
+        'text-xl lg:text-3xl font-primary font-bold text-font mb-6',
+        { 'text-left': props.titlePosition == 'left' },
+        { 'text-right': props.titlePosition == 'right' },
+        { 'text-center': props.titlePosition == 'center' },
+      ]"
+    >
+      {{ props.title }}
+    </h2>
+    <div v-if="state.isLoading">
+      <LoadingAnimation />
+    </div>
+    <div v-else class="flex flex-wrap justify-center gap-6 px-4">
+      <CourseListing
+        v-for="(course, i) in recentCourses"
+        :key="course.id"
+        :index="i"
+        :course="course"
+        :instructor="findInstructor(course.instructor)"
+        :category_bg="colors[i % colors.length].bg_color"
+        :category_text="colors[i % colors.length].icon_color"
+        class="h-full"
+      />
     </div>
   </section>
 </template>

@@ -37,14 +37,16 @@ defineProps({
       class="transition-shadow duration-300 ease-out hover:shadow-xl hover:bg-fourth"
     >
       <!-- Left: Rounded Div with Icon -->
-      <div class="flex items-center justify-center min-w-16 min-h-16 bg-background rounded-full">
-        <component :is="icon" :class="`w-8 h-8 ${icon_color}`" />
+      <div
+        class="flex items-center justify-center min-w-6 min-h-6 lg:min-w-12 lg:min-h-12 bg-background rounded-full"
+      >
+        <component :is="icon" :class="`w-4 lg:w-8 ${icon_color}`" />
       </div>
 
       <!-- Right: Text Content -->
       <div>
-        <p class="text-base text-font font-primary">{{ categoryName }}</p>
-        <p class="text-base text-gray_2">{{ numberOfCourses }} courses</p>
+        <p class="text-xs lg:text-base text-font font-primary">{{ categoryName }}</p>
+        <p class="text-xs lg:text-base text-gray_2">{{ numberOfCourses }} courses</p>
       </div>
     </div>
   </RouterLink>

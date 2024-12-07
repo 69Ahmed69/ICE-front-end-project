@@ -28,95 +28,99 @@ const instructorState = computed(() => userStore.isInstuctor)
 </script>
 
 <template>
-  <div v-if="!userState" class="bg-font text-background px-36 py-12">
-    <div class="container mx-auto flex flex-wrap md:flex-nowrap space-y-10 md:space-y-0">
-      <div class="w-full md:w-1/2 flex flex-col space-y-4">
+  <div v-if="!userState" class="bg-font text-background px-4 lg:px-36 py-2 lg:pt-8 lg:py-4">
+    <div class="flex flex-wrap text-center lg:text-start space-y-4 lg:space-y-4">
+      <div class="w-full md:w-3/5 flex flex-col space-y-4">
         <div>
-          <h2 class="text-3xl text-center font-primary">
+          <h2 class="text-xl lg:text-3xl font-primary">
             Start learning with 16.74 Million <br />
             students around the world.
           </h2>
         </div>
-        <div class="flex flex-wrap md:flex-nowrap space-x-6 justify-center">
+        <div
+          class="flex flex-wrap items-center justify-center lg:items-start lg:justify-start md:flex-nowrap space-x-6"
+        >
           <RouterLink to="/sign-in">
             <IceButton
               class="px-8 hover:bg-tertiary shadow-tertiary hover:text-font"
               text="Join the Family"
               :priority="1"
-              :size="1"
+              :size="2"
           /></RouterLink>
           <RouterLink to="/courses/"
             ><IceButton
               class="bg-gray_4 border-gray_4"
               text="Browse all courses"
               :priority="6"
-              :size="1"
+              :size="2"
           /></RouterLink>
         </div>
       </div>
 
       <!-- Right Section -->
-      <div class="w-full md:w-1/2 flex flex-wrap space-y-4">
-        <div class="flex justify-between w-full space-x-6 items-center">
+      <div class="w-full md:w-2/5 flex flex-wrap space-y-4">
+        <div
+          class="flex w-full space-x-12 justify-center items-center lg:items-start lg:justify-start"
+        >
           <div class="space-y-4">
-            <h3 class="text-4xl font-semibold">16.5k</h3>
-            <p class="text-gray_3 text-base">Online Course</p>
+            <h3 class="text-2xl lg:text-4xl font-semibold">16.5k</h3>
+            <p class="text-gray_3 text-xs lg:text-base">Online Course</p>
           </div>
           <div class="space-y-4">
-            <h3 class="text-4xl font-semibold">3.1k</h3>
-            <p class="text-gray_3 text-base">Verified Instructor</p>
+            <h3 class="text-2xl lg:text-4xl font-semibold">3.1k</h3>
+            <p class="text-gray_3 text-xs lg:text-base">Verified Instructor</p>
           </div>
           <div class="space-y-4">
-            <h3 class="text-4xl font-semibold">94.1%</h3>
-            <p class="text-gray_3 text-base">Success Rate</p>
+            <h3 class="text-2xl lg:text-4xl font-semibold">94.1%</h3>
+            <p class="text-gray_3 text-xs lg:text-base">Success Rate</p>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div v-if="userState && !instructorState" class="bg-font text-background px-48 py-12">
-    <div class="container mx-auto flex flex-wrap md:flex-nowrap space-y-10 md:space-y-0">
-      <div class="w-full md:w-1/2 flex flex-col space-y-8">
+  <div
+    v-if="userState && !instructorState"
+    class="bg-font text-background px-4 lg:px-36 py-4 lg:py-4"
+  >
+    <div class="flex flex-wrap justify-center items-center lg:justify-between">
+      <div class="w-full md:w-1/2 flex flex-col space-y-4 lg:space-y-8">
         <div>
-          <h2 class="text-4xl font-primary">
+          <h2 class="text-2xl lg:text-4xl font-primary text-center lg:text-start">
             Start teaching with us<br />
             and inspire others.
           </h2>
         </div>
         <div>
-          <p class="text-gray_3 text-lg">
+          <p class="text-gray_3 text-xs lg:text-lg text-center lg:text-start">
             Become an instructor & start teaching with 26k<br />
             certified instructors. Create a success story with<br />
             16.74m Students — Grow yourself in 71 countries.
           </p>
         </div>
-        <RouterLink to="/become-an-instructor">
+        <RouterLink to="/become-an-instructor" class="text-center lg:text-start">
           <IceButton
-            class="px-12 hover:bg-tertiary shadow-tertiary hover:text-font"
+            class="hover:bg-tertiary w-1/2 shadow-tertiary hover:text-font mb-4 lg:mb-0"
             text="Register Now!!"
             :priority="1"
             :size="2"
         /></RouterLink>
       </div>
-
-      <div class="w-full md:w-1/2 flex flex-wrap items-center justify-center space-y-4">
-        <img src="../../assets/img/CTA.png" alt="Call to Action" class="h-80" />
-      </div>
+      <img src="../../assets/img/CTA.png" alt="Call to Action" class="h-40 lg:h-80" />
     </div>
   </div>
-  <footer class="bg-font border-t-2 border-gray_3 text-background px-36 py-20">
-    <div class="container mx-auto flex flex-wrap md:flex-nowrap space-y-10 md:space-y-0">
+  <footer class="bg-font text-background px-6 lg:px-36 py-4 lg:py-8">
+    <div class="flex flex-wrap md:flex-nowrap space-y-4 lg:space-y-10">
       <!-- Left Section -->
       <div class="w-full md:w-1/2 flex flex-col space-y-4">
         <div>
-          <img src="../../assets/img/logo.png" alt="Logo" class="h-20" />
+          <img src="../../assets/img/logo.png" alt="Logo" class="h-16 lg:h-20" />
         </div>
         <div>
-          <h2 class="text-2xl font-primary">Integrated Classroom Environment</h2>
+          <h2 class="text-lg lg:text-2xl font-primary">Integrated Classroom Environment</h2>
         </div>
         <div>
-          <p class="text-sm leading-relaxed text-gray_3">
+          <p class="text-xs lg:text-sm leading-relaxed text-gray_3">
             We are dedicated to providing the best online learning experience<br />
             with a variety of courses and resources.
           </p>
@@ -126,45 +130,61 @@ const instructorState = computed(() => userStore.isInstuctor)
             href="https://www.facebook.com"
             target="_blank"
             rel="noopener noreferrer"
-            class="w-10 h-10 flex items-center justify-center rounded-full bg-gray_1 hover:bg-primary hover:shadow-lg hover:shadow-primary transition"
+            class="size-6 lg:size-10 flex items-center justify-center rounded-full bg-gray_1 hover:bg-primary hover:shadow-lg hover:shadow-primary transition"
           >
-            <img src="../../assets/social-media/facebook-icon.png" alt="Facebook" class="w-5 h-5" />
+            <img
+              src="../../assets/social-media/facebook-icon.png"
+              alt="Facebook"
+              class="size-3 lg:size-5"
+            />
           </a>
           <a
             href="https://www.x.com"
             target="_blank"
             rel="noopener noreferrer"
-            class="w-10 h-10 flex items-center justify-center rounded-full bg-gray_1 hover:bg-primary hover:shadow-lg hover:shadow-primary transition"
+            class="size-6 lg:size-10 flex items-center justify-center rounded-full bg-gray_1 hover:bg-primary hover:shadow-lg hover:shadow-primary transition"
           >
-            <img src="../../assets/social-media/twitter-icon.png" alt="Twitter" class="w-5 h-5" />
+            <img
+              src="../../assets/social-media/twitter-icon.png"
+              alt="Twitter"
+              class="size-3 lg:size-5"
+            />
           </a>
           <a
             href="https://www.instagram.com"
             target="_blank"
             rel="noopener noreferrer"
-            class="w-10 h-10 flex items-center justify-center rounded-full bg-gray_1 hover:bg-primary hover:shadow-lg hover:shadow-primary transition"
+            class="size-6 lg:size-10 flex items-center justify-center rounded-full bg-gray_1 hover:bg-primary hover:shadow-lg hover:shadow-primary transition"
           >
             <img
               src="../../assets/social-media/instagram-icon.png"
               alt="Instagram"
-              class="w-5 h-5"
+              class="size-3 lg:size-5"
             />
           </a>
           <a
             href="https://www.linkedin.com"
             target="_blank"
             rel="noopener noreferrer"
-            class="w-10 h-10 flex items-center justify-center rounded-full bg-gray_1 hover:bg-primary hover:shadow-lg hover:shadow-primary transition"
+            class="size-6 lg:size-10 flex items-center justify-center rounded-full bg-gray_1 hover:bg-primary hover:shadow-lg hover:shadow-primary transition"
           >
-            <img src="../../assets/social-media/linkedin-icon.png" alt="LinkedIn" class="w-5 h-5" />
+            <img
+              src="../../assets/social-media/linkedin-icon.png"
+              alt="LinkedIn"
+              class="size-3 lg:size-5"
+            />
           </a>
           <a
             href="https://www.youtube.com"
             target="_blank"
             rel="noopener noreferrer"
-            class="w-10 h-10 flex items-center justify-center rounded-full bg-gray_1 hover:bg-primary hover:shadow-lg hover:shadow-primary transition"
+            class="size-6 lg:size-10 flex items-center justify-center rounded-full bg-gray_1 hover:bg-primary hover:shadow-lg hover:shadow-primary transition"
           >
-            <img src="../../assets/social-media/youtube-icon.png" alt="YouTube" class="w-5 h-5" />
+            <img
+              src="../../assets/social-media/youtube-icon.png"
+              alt="YouTube"
+              class="size-3 lg:size-5"
+            />
           </a>
         </div>
       </div>
@@ -173,8 +193,8 @@ const instructorState = computed(() => userStore.isInstuctor)
       <div class="w-full md:w-1/2 flex flex-wrap space-y-4">
         <div class="flex justify-between w-full space-x-6">
           <div class="space-y-4">
-            <h3 class="text-lg font-semibold">Top 4 Categories</h3>
-            <ul class="text-base space-y-4 text-gray_3">
+            <h3 class="text-sm lg:text-lg font-semibold">Top 4 Categories</h3>
+            <ul class="text-xs lg:text-base space-y-2 lg:space-y-4 text-gray_3">
               <li v-for="(category, index) in topCategories" :key="index">
                 <RouterLink :to="category.link" class="hover:underline">
                   {{ category.name }}
@@ -184,8 +204,8 @@ const instructorState = computed(() => userStore.isInstuctor)
           </div>
           <!-- Quick Links -->
           <div class="space-y-4">
-            <h3 class="text-lg font-semibold">Quick Links</h3>
-            <ul class="text-base space-y-4 text-gray_3">
+            <h3 class="text-sm lg:text-lg font-semibold">Quick Links</h3>
+            <ul class="text-xs lg:text-base space-y-2 lg:space-y-4 text-gray_3">
               <li>
                 <RouterLink to="/about" class="hover:underline">About</RouterLink>
               </li>
@@ -198,7 +218,7 @@ const instructorState = computed(() => userStore.isInstuctor)
                   <p class="text-background hover:underline hover:text-primar">
                     Become an Instructor
                   </p>
-                  <ArrowRightIcon class="w-5 h-5 text-background hover:text-primary" />
+                  <ArrowRightIcon class="size-3 lg:size-5 text-background hover:text-primary" />
                 </RouterLink>
               </li>
               <li>
@@ -211,8 +231,8 @@ const instructorState = computed(() => userStore.isInstuctor)
           </div>
           <!-- Support -->
           <div class="space-y-4">
-            <h3 class="text-lg font-semibold">Support</h3>
-            <ul class="text-base space-y-4 text-gray_3">
+            <h3 class="text-sm lg:text-lg font-semibold">Support</h3>
+            <ul class="text-xs lg:text-base space-y-2 lg:space-y-4 text-gray_3">
               <li>
                 <RouterLink to="/support/help-center" class="hover:underline"
                   >Help Center</RouterLink

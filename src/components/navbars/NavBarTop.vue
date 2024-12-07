@@ -22,34 +22,32 @@ const isActiveLink = (routePath) => route.path === routePath
 
 const linkClass = (path) =>
   [
-    'bg-font',
+    'bg-font text-xs lg:text-base',
     'text-gray_3',
-    'px-3',
-    'py-2',
-    isActiveLink(path) ? 'text-white border-t-4 border-primary' : 'bg-font',
+    'px-2 lg:px-3',
+    'py-1 lg:py-2',
+    isActiveLink(path) ? 'text-white border-t-2 lg:border-t-4 border-primary' : 'bg-font',
   ].join(' ')
 </script>
 
 <template>
-  <section class="bg-font items-start fixed w-full shadow-md px-8 max-h-14 font-sans z-20">
-    <div class="mx-auto px-2 sm:px-2 lg:px-2">
-      <div class="flex items-start justify-between">
-        <!-- Left Section: Navigation Links -->
-        <div class="flex text-nowrap max-h-14 space-x-2 pb-2">
-          <RouterLink
-            v-for="link in links"
-            :key="link.path"
-            :to="link.path"
-            :class="linkClass(link.path)"
-          >
-            {{ link.name }}
-          </RouterLink>
-        </div>
-        <!-- Right Section: Dropdowns -->
-        <div class="flex text-nowrap max-h-14 space-x-2 pt-1">
-          <DropDown type="lang" :label="language" :items="languageItems" :transparent="true" />
-          <DropDown type="curr" :label="currency" :items="currencyItems" :transparent="true" />
-        </div>
+  <section class="bg-font shadow-md px-4 pb-4 lg:pb-0 lg:px-8 font-sans z-20">
+    <div class="flex flex-wrap items-start justify-between">
+      <!-- Left Section: Navigation Links -->
+      <div class="flex max-h-14 space-x-2 pb-2">
+        <RouterLink
+          v-for="link in links"
+          :key="link.path"
+          :to="link.path"
+          :class="linkClass(link.path)"
+        >
+          {{ link.name }}
+        </RouterLink>
+      </div>
+      <!-- Right Section: Dropdowns -->
+      <div class="flex max-h-14 space-x-2 pt-1">
+        <DropDown type="lang" :label="language" :items="languageItems" :transparent="true" />
+        <DropDown type="curr" :label="currency" :items="currencyItems" :transparent="true" />
       </div>
     </div>
   </section>

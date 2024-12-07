@@ -1,4 +1,5 @@
 <script setup>
+import BackToTheTop from './components/ui elements/BackToTheTop.vue'
 import { RouterView } from 'vue-router'
 import { usePrefrencesStore } from '@/stores/user'
 

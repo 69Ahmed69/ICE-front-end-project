@@ -10,6 +10,14 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  title: {
+    type: String,
+    defualt: 'Best Sellig Courses',
+  },
+  titlePosition: {
+    type: String,
+    defualt: 'center',
+  },
 })
 
 const state = reactive({
@@ -17,13 +25,12 @@ const state = reactive({
   isLoading: true,
 })
 
-// Helper function to simulate delay
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 onMounted(async () => {
   try {
     // Simulated lag
-    await delay(5000)
+    await delay(1000)
     const response = await axios.get('/api/courses')
     state.courses = response.data
   } catch (error) {
@@ -43,27 +50,31 @@ const colors = [
 </script>
 
 <template>
-  <section class="bg-white px-10 py-20">
-    <div class="container-xl lg:container m-auto">
-      <h2 class="text-3xl font-primary font-bold text-font mb-6 text-center">
-        Best Selling Courses.
-      </h2>
-      <!-- Show the loading animation while loading -->
-      <div v-if="state.isLoading">
-        <LoadingAnimation />
-      </div>
-      <div
-        v-else
-        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 max-w-7xl mx-auto px-4"
-      >
-        <CourseListing
-          v-for="(course, i) in state.courses.slice(0, limit || state.courses.length)"
-          :index="i"
-          :course="course"
-          :category_bg="colors[i % colors.length].bg_color"
-          :category_text="colors[i % colors.length].icon_color"
-        />
-      </div>
+  <section class="px-6 lg:px-16 py-6 lg:pb-16">
+    <h2
+      :class="[
+        'text-xl lg:text-3xl font-primary font-bold text-font mb-6',
+        { 'text-left': titlePosition == 'left' },
+        { 'text-right': titlePosition == 'right' },
+        { 'text-center': titlePosition == 'center' },
+      ]"
+    >
+      {{ title }}
+    </h2>
+    <div v-if="state.isLoading">
+      <LoadingAnimation />
+    </div>
+    <div
+      v-else
+      class="flex flex-nowrap overflow-scroll lg:overflow-visible lg:flex-wrap lg:max-w-full gap-6 justify-center items-center"
+    >
+      <CourseListing
+        v-for="(course, i) in state.courses.slice(0, limit || state.courses.length)"
+        :index="i"
+        :course="course"
+        :category_bg="colors[i % colors.length].bg_color"
+        :category_text="colors[i % colors.length].icon_color"
+      />
     </div>
   </section>
 </template>

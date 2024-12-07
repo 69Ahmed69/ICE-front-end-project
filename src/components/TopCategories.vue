@@ -1,13 +1,11 @@
 <template>
-  <section class="py-16 px-32 bg-white">
+  <section class="py-10 lg:py-12 px-6 lg:px-32 bg-white">
     <!-- Header -->
     <div class="text-center mb-8">
-      <h2 class="text-4xl font-primary font-black text-font">Browse Top Categories</h2>
+      <h2 class="text-xl lg:text-3xl font-primary font-black text-font">Browse Top Categories</h2>
     </div>
 
-    <div
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto px-4"
-    >
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 lg:gap-4 px-4">
       <CategoryCard
         v-for="(category, index) in categories"
         :key="index"
@@ -20,12 +18,12 @@
       />
     </div>
     <div
-      class="text-font gap-2 text-lg flex font-medium font-sans justify-center items-center mt-12"
+      class="text-font gap-2 text-sm lg:text-lg flex font-medium font-sans justify-center items-center mt-6 lg:mt-12"
     >
       <p>We have even more categories for you!</p>
       <RouterLink to="/courses/" class="flex items-center gap-1">
         <p class="text-primary">Browse All</p>
-        <ArrowRightIcon class="w-6 h-6 text-primary" />
+        <ArrowRightIcon class="w-4 lg:w-6 text-primary" />
       </RouterLink>
     </div>
   </section>
@@ -63,73 +61,73 @@ const categories = [
     name: 'Data Science',
     courses: 45,
     icon: TableCellsIcon,
-    link: '/courses/category=Data%20Science',
+    link: '/courses/Data%20Science',
   },
   {
     name: 'Cyber Security',
     courses: 69,
     icon: ShieldCheckIcon,
-    link: '/courses/category=Cyber%20Security',
+    link: '/courses/Cyber%20Security',
   },
   {
     name: 'Front-end Web',
     courses: 21,
     icon: ComputerDesktopIcon,
-    link: '/courses/category=Front-end%20Web',
+    link: '/courses/Front-end%20Web',
   },
   {
     name: 'Databases',
     courses: 74,
     icon: CircleStackIcon,
-    link: '/courses/category=Databases',
+    link: '/courses/Databases',
   },
   {
     name: 'Game Dev',
     courses: 31,
     icon: PuzzlePieceIcon,
-    link: '/courses/category=Game%20Dev',
+    link: '/courses/Game%20Dev',
   },
   {
     name: 'Networks',
     courses: 11,
     icon: WifiIcon,
-    link: '/courses/category=Networks',
+    link: '/courses/Networks',
   },
   {
     name: 'Mobile Dev',
     courses: 36,
     icon: DevicePhoneMobileIcon,
-    link: '/courses/category=Mobile%20Dev',
+    link: '/courses/Mobile%20Dev',
   },
   {
     name: 'Software Dev',
     courses: 13,
     icon: CpuChipIcon,
-    link: '/courses/category=Software%20Dev',
+    link: '/courses/Software%20Dev',
   },
   {
     name: 'Back-end Web',
     courses: 89,
     icon: CommandLineIcon,
-    link: '/courses/category=Back-end%20Web',
+    link: '/courses/Back-end%20Web',
   },
   {
     name: 'Business Intelligence',
     courses: 6,
     icon: ChartBarIcon,
-    link: '/courses/category=Business%20Intelligence',
+    link: '/courses/Business%20Intelligence',
   },
   {
     name: 'Artificial Intelligence',
     courses: 24,
     icon: SparklesIcon,
-    link: '/courses/category=Artificial%20Intelligence',
+    link: '/courses/Artificial%20Intelligence',
   },
   {
     name: 'Mathematics',
     courses: 14,
     icon: CalculatorIcon,
-    link: '/courses/category=Mathematics',
+    link: '/courses/Mathematics',
   },
 ]
 </script>

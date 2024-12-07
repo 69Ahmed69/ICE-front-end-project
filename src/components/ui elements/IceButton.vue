@@ -7,7 +7,7 @@ const props = defineProps({
     required: false,
     default: 1, // Number between 1 and 3
     validator: (value) =>
-      [1, 2, 3].includes(value) ||
+      [1, 2, 3, 4].includes(value) ||
       console.error(`Invalid "size" value: ${value}. Expected 1, 2, or 3.`),
   },
   icon: {
@@ -45,20 +45,21 @@ const props = defineProps({
 const buttonClasses = computed(() => {
   const sizeClasses =
     {
-      1: 'px-5 py-3 text-sm',
-      2: 'px-6 py-4 text-base',
-      3: 'px-7 py-5 text-lg',
+      1: 'px-2 lg:px-5 py-1 lg:py-3 text-xs lg:text-sm',
+      2: 'px-3 lg:px-6 py-3 lg:py-4 text-sm lg:text-base',
+      3: 'px-4 lg:px-7 py-4 lg:py-5 text-base lg:text-lg',
+      4: 'px-3 py-2 text-base',
     }[props.size] ||
     (() => {
       console.error(`Invalid "size" value: ${props.size}`)
-      return 'px-5 py-3 text-sm' // Fallback
+      return 'px-2 lg:px-5 py-1 lg:py-3 text-xs lg:text-sm' // Fallback
     })()
 
   const borderSize =
     {
-      1: 'border-4',
-      2: 'border-4',
-      3: 'border-6',
+      1: 'border-2 lg:border-4',
+      2: 'border-2 lg:border-4',
+      3: 'border-4 lg:border-6',
     }[props.size] || 'border-4'
 
   const priorityClasses =
@@ -70,7 +71,7 @@ const buttonClasses = computed(() => {
       5: `bg-secondary_trans ${borderSize} border-secondary_trans text-secondary hover:bg-secondary hover:border-secondary hover:text-background disabled:opacity-60`,
       6: `bg-gray_3 ${borderSize} border-gray_3 text-background hover:border-gray_1 hover:bg-gray_1 disabled:opacity-60`,
       7: `bg-background text-font hover:bg-tertiary disabled:opacity-50`,
-      8: `bg-background text-secondary hover:bg-secondary_trans disabled:opacity-50`,
+      8: `bg-background border-2 border-fourth text-secondary hover:bg-secondary_trans disabled:opacity-50`,
       9: `bg-transparent text-gray_1 hover:bg-gray_4 disabled:opacity-50`,
     }[props.priority] ||
     (() => {
@@ -93,6 +94,7 @@ const iconSizeClass = computed(() => {
       1: 'w-5 h-5',
       2: 'w-6 h-6',
       3: 'w-7 h-7',
+      4: 'size-6',
     }[props.size] ||
     (() => {
       console.error(`Invalid "size" value: ${props.size}`)

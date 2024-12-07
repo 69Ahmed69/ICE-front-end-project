@@ -1,7 +1,7 @@
 <script setup>
 import { reactive, defineProps, onMounted, computed } from 'vue'
 import { ArrowRightIcon } from '@heroicons/vue/24/outline'
-import InstructorCard from './InstructorCard.vue'
+import InstructorCard from './instructor cards/InstructorCard.vue'
 import LoadingAnimation from './LoadingAnimation.vue'
 import axios from 'axios'
 
@@ -21,7 +21,6 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 onMounted(async () => {
   try {
-    // Simulated lag
     await delay(10)
     const response = await axios.get('/api/instructors')
     state.instructors = response.data
@@ -37,9 +36,9 @@ const bestInstructors = computed(() => {
 </script>
 
 <template>
-  <section class="bg-white px-10 py-20 gap-4 mx-24 rounded-3xl">
-    <div class="container-xl lg:container m-auto">
-      <h2 class="text-3xl font-primary font-bold text-font mb-12 text-center">
+  <section class="bg-white py-4 lg:pb-12 gap-4 rounded-3xl px-8 lg:px-16">
+    <div class="flex flex-wrap flex-col justify-center items-center">
+      <h2 class="text-xl lg:text-3xl font-primary font-bold text-font mb-12 text-center">
         Instructors of the Month
       </h2>
       <div v-if="state.isLoading">
@@ -47,7 +46,7 @@ const bestInstructors = computed(() => {
       </div>
       <div
         v-else
-        class="grid grid-cols-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-7xl mx-auto px-4"
+        class="flex flex-nowrap overflow-scroll lg:overflow-visible lg:flex-wrap max-w-80 lg:max-w-full gap-6 justify-center"
       >
         <InstructorCard
           v-for="(instructor, i) in bestInstructors"
@@ -58,7 +57,7 @@ const bestInstructors = computed(() => {
         />
       </div>
       <div
-        class="text-gray_2 gap-2 text-lg flex font-medium font-sans justify-center items-center mt-12"
+        class="text-gray_2 text-center lg:text-start gap-2 lg:text-base text-sm flex flex-wrap font-medium font-sans justify-center items-center mt-12"
       >
         <p>Millions of students are waiting for an instructor. Start Teaching & Earning Now!</p>
         <RouterLink to="/become-an-instructor" class="flex items-center gap-1">

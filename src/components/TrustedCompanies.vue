@@ -36,11 +36,13 @@ const logos = [
 </script>
 
 <template>
-  <div class="flex flex-col lg:flex-row gap-10 px-40 py-10 mb-10">
+  <div class="flex flex-col lg:flex-row gap-10 px-6 lg:px-36 py-10 mb-8 lg:mb-16">
     <!-- Left Section -->
-    <div class="flex-1 lg:basis-1/3 pt-10">
-      <h2 class="text-3xl font-primary font-bold text-font mb-4">Trusted by Top Companies</h2>
-      <p class="text-base font-primary text-gray_3">
+    <div class="flex flex-col items-center justify-center lg:basis-1/3 text-center lg:text-start">
+      <h2 class="text-xl lg:text-3xl font-primary font-bold text-font mb-4">
+        Trusted by Top Companies
+      </h2>
+      <p class="text-xs lg:text-base font-primary text-gray_3">
         Our platform is trusted by some of the most reputable companies around the globe. Join the
         growing network of organizations benefiting from our services.
       </p>
@@ -48,7 +50,7 @@ const logos = [
 
     <!-- Right Section -->
     <div class="flex-1 lg:basis-2/3">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="flex flex-wrap gap-6 justify-center items-center">
         <!-- Logos -->
 
         <div
@@ -61,7 +63,7 @@ const logos = [
             <img
               :src="logo.src"
               alt="Company Logo"
-              class="max-w-full max-h-24 h-24 object-contain"
+              class="max-w-full max-h-12 lg:max-h-24 object-contain"
             />
           </a>
         </div>
