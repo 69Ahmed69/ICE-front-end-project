@@ -1,11 +1,22 @@
 <script setup>
 import { ArrowRightIcon, CheckIcon } from '@heroicons/vue/20/solid'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
+import { useUserStore } from '@/stores/user'
 import IceButton from '@/components/ui elements/IceButton.vue'
+import { useToast } from 'vue-toastification'
+import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+import axios from 'axios'
 
 const isChecked = ref(false)
 const passwordVisible = ref(false)
+const userStore = useUserStore()
+const toast = useToast()
+const router = useRouter()
+
+const email = ref(null)
+const password = ref(null)
+const fieldsWarning = ref('')
 
 const toggleCheck = () => {
   isChecked.value = !isChecked.value
@@ -14,15 +25,76 @@ const toggleCheck = () => {
 const togglePasswordVisibility = () => {
   passwordVisible.value = !passwordVisible.value
 }
+
+const signIn = async () => {
+  if (!email.value || !password.value) {
+    fieldsWarning.value = 'Please make sure to fill out all the required fields.'
+    return
+  }
+  // Determine if input is an email or username
+  const isEmail = email.value.includes('@')
+  const queryField = isEmail ? 'email' : 'userName'
+
+  // Fetch the user based on email or username
+  const response = await axios.get(`/api/users?${queryField}=${email.value}`)
+
+  if (response.data.length === 0) {
+    fieldsWarning.value = 'User not found. Check your input and try again.'
+    return
+  }
+
+  const user = response.data[0]
+
+  if (user.password !== password.value) {
+    fieldsWarning.value = 'Incorrect password. Please try again.'
+    return
+  }
+
+  // Generate token and expiry
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  let token = ''
+
+  // Generate a random 32-character token
+  for (let i = 0; i < 32; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length)
+    token += characters[randomIndex]
+  }
+
+  const expiryTimestamp = Date.now() + 3 * 60 * 60 * 1000
+
+  // Update the user's token in the database
+  await axios.patch(`/api/users/${user.id}`, {
+    authentication: {
+      token: token,
+      expires: expiryTimestamp,
+    },
+  })
+  userStore.signIn(user)
+  if (user.isInstructor) {
+    userStore.makeInstructor()
+  } else {
+    userStore.removeInstructor()
+  }
+  // Store the token and username in cookies
+  document.cookie = `ice-token=${token}; path=/; max-age=${60 * 60 * 3}` // 3 hours
+  document.cookie = `username=${user.userName}; path=/; max-age=${60 * 60 * 3}` // 3 hours
+
+  if (isChecked.value) {
+    const shouldStore = confirm('Do you want to save your email and password for easier login?')
+    if (shouldStore) {
+      localStorage.setItem('rememberedEmail', email.value)
+      localStorage.setItem('rememberedPassword', password.value)
+    }
+  }
+  // Redirect to the home page
+  router.push('/')
+  toast.success(`Welcome back, ${user.firstName}.`)
+}
 </script>
 
 <template>
-  <nav
-    class="flex flex-row justify-between items-center py-2 lg:py-3 shadow-xl pl-4 lg:pl-24 pr-4 lg:pr-12 shadow-inset-black p-4 fixed inset-x-0 top-0 bg-white"
-  >
-    <div
-      class="flex w-full flex-col lg:flex-row lg:justify-between items-center font-primary gap-2"
-    >
+  <nav class="w-full py-2 lg:py-3 shadow-xl lg:pl-24 fixed lg:pr-12 p-4 bg-white">
+    <div class="flex flex-col lg:flex-row lg:justify-between items-center font-primary gap-2">
       <RouterLink to="/">
         <div class="flex justify-center items-center gap-2">
           <img class="h-10 lg:h-12" src="@/assets/img/logo.svg" alt="ice-logo" />
@@ -35,43 +107,38 @@ const togglePasswordVisibility = () => {
       <div class="hidden lg:items-center lg:gap-2 lg:flex">
         <p class="text-xs lg:text-sm text-gray_1">Don't have an account?</p>
         <router-link to="/sign-up" class="cta" href="#">
-          <IceButton
-            :priority="7"
-            :size="1"
-            text="Sign Up"
-            class="inline-flex px-2 h-10 hover:border-2"
-          />
+          <IceButton :priority="4" :size="1" text="Sign Up" class="w-28 h-10" />
         </router-link>
       </div>
     </div>
   </nav>
   <main>
-    <div class="flex justify-center items-center lg:items-stretch h-screen bg-gray_4">
+    <div class="flex h-screen lg:h-auto justify-center items-center bg-gray_4">
       <!-- Left Section -->
       <div
-        class="lg:w-6/12 bg-gradient-to-t from-tertiary to-primary hidden lg:flex lg:items-center lg:justify-center"
+        class="lg:w-1/2 h-screen bg-gradient-to-t from-tertiary to-primary hidden lg:flex lg:items-center lg:justify-center"
       >
-        <img src="@/assets/img/Saly-10.svg" alt="illustration" />
+        <img class="object-cover" src="@/assets/img/Saly-10.svg" alt="illustration" />
       </div>
 
       <div
-        class="flex bg-white justify-center items-center shadow-xl lg:mx-10 mb-6 mt-20 lg:mt-24 rounded-3xl lg:w-6/12"
+        class="flex bg-white h-auto lg:h-full justify-center items-center shadow-xl lg:mx-10 mb-6 mt-20 lg:mt-24 rounded-3xl lg:w-1/2"
       >
-        <div class="flex flex-col gap-4 px-16 lg:px-24 py-8 lg:py-16 w-full">
+        <div class="flex flex-col gap-4 px-16 lg:px-24 py-8 lg:py-16 w-full h-full">
           <form
             id="signUpForm"
-            @submit="handleSubmit"
-            class="flex flex-col items-center w-full gap-4"
+            @submit.prevent="signIn"
+            class="flex flex-col items-center w-full h-full gap-4"
           >
             <h2 class="text-font font-primary font-semibold text-lg lg:text-2xl">
               Sign in to your account
             </h2>
 
             <!-- Email Input -->
-            <div class="flex flex-col w-full gap-2">
+            <div class="flex flex-col h-full w-full gap-2">
               <label class="text-font text-xs lg:text-sm font-medium">Email</label>
               <input
-                type="email"
+                type="text"
                 v-model="email"
                 placeholder="Username or Email..."
                 class="text-font py-2 rounded-full border border-tertiary px-4 text-sm lg:text-base focus:outline-1 focus:outline-primary hover:bg-fourth"
@@ -119,11 +186,12 @@ const togglePasswordVisibility = () => {
                 :icon="ArrowRightIcon"
                 icon_position="right"
                 text="Sign In"
+                type="submit"
                 class="lg:h-10 w-1/2"
               />
             </div>
           </form>
-
+          <span class="text-danger text-xs lg:text-sm">{{ fieldsWarning }}</span>
           <div
             class="text-xs lg:text-sm text-gray_2 font-medium flex items-center justify-center gap-2"
           >

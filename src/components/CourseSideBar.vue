@@ -6,9 +6,7 @@ import {
   UsersIcon,
   DocumentTextIcon,
   CurrencyDollarIcon,
-  TrophyIcon,
   LanguageIcon,
-  DocumentCheckIcon,
   DocumentDuplicateIcon,
   ShoppingCartIcon,
   BanknotesIcon,
@@ -23,6 +21,7 @@ const courseUrl = ref(window.location.href)
 
 defineProps({
   course: Object,
+  ownsCourse: Boolean,
 })
 
 function daysLeft(discountEnd) {
@@ -90,7 +89,7 @@ const shareOnWhatsApp = () => {
 
 <template>
   <div
-    class="flex flex-col mx-16 lg:mx-0 lg:mt-0 mt-8 divide-y-2 divide-tertiary md:w-1/4 bg-background rounded-3xl border-2 border-tertiary shadow-lg lg:right-16 lg:z-50 ease-in duration-500 lg:fixed hover:shadow-xl transition-shadow hover:shadow-gray_3"
+    class="flex flex-col mx-16 lg:mx-0 lg:mt-0 mt-8 divide-y-2 divide-tertiary md:w-1/4 bg-background rounded-3xl border-2 border-tertiary shadow-lg lg:right-16 lg:z-50 ease-in duration-500 lg:fixed hover:shadow-xl transition-shadow hover:shadow-gray_2"
   >
     <div class="space-y-1 p-6 pb-4">
       <div class="flex justify-between items-center">
@@ -166,7 +165,7 @@ const shareOnWhatsApp = () => {
         <span class="text-gray_2">English</span>
       </div>
     </div>
-    <div class="space-y-2 px-4 py-4 flex flex-col items-center">
+    <div v-if="!ownsCourse" class="space-y-2 px-4 py-4 flex flex-col items-center">
       <IceButton
         class="w-full"
         text="Buy Now"
@@ -190,6 +189,12 @@ const shareOnWhatsApp = () => {
       <span class="text-xs text-gray_3"
         ><b>Note: </b>all course have 30-days money-back guarantee</span
       >
+    </div>
+    <div v-else class="px-4 py-4 flex flex-col w-full space-y-2">
+      <h2 class="text-lg font-medium text-font text-center">You already own this course</h2>
+      <RouterLink :to="`/watch-course/${course.id}`">
+        <IceButton text="Watch Lecture" :priority="4" :size="4" class="w-full" />
+      </RouterLink>
     </div>
     <div class="space-y-3 px-8 py-4 flex flex-col text-sm">
       <h2 class="text-base font-medium text-font">This course Includes:</h2>

@@ -56,7 +56,7 @@ const logos = [
         <div
           v-for="(logo, i) in logos"
           :key="i"
-          :class="`flex items-center justify-center p-4 bg-background rounded-3xl shadow-md transition-transform duration-500 hover:scale-110 hover:z-10`"
+          :class="`flex items-center justify-center p-4 bg-background rounded-3xl shadow-md `"
           class="transition-shadow duration-300 ease-out hover:shadow-xl hover:bg-fourth"
         >
           <a :href="logo.link" target="_blank" rel="noopener noreferrer">

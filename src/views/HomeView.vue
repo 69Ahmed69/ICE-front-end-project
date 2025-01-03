@@ -6,7 +6,7 @@ import TopCategories from '@/components/TopCategories.vue'
 import BestSellingCourses from '@/components/BestSellingCourses.vue'
 import FeatureCourses from '@/components/FeatureCourses.vue'
 import RecentCourses from '@/components/RecentCourses.vue'
-import BecomeAnInstructor from '@/components/BecomeAnInstructor.vue'
+import CTA from '@/components/HomePageCta.vue'
 import TopInsctructors from '@/components/TopInsctructors.vue'
 import TrustedCompanies from '@/components/TrustedCompanies.vue'
 import FooterTop from '@/components/footers/FooterTop.vue'
@@ -29,7 +29,7 @@ import AltHero from '@/components/Alt-Hero.vue'
   />
   <FeatureCourses :limit="4" />
   <RecentCourses :limit="4" title="Recently Added Courses" titlePosition="center" />
-  <BecomeAnInstructor />
+  <CTA />
   <TopInsctructors :limit="5" />
   <TrustedCompanies />
   <div><FooterTop /> <FooterBottom /></div>

@@ -45,7 +45,7 @@ const props = defineProps({
 const buttonClasses = computed(() => {
   const sizeClasses =
     {
-      1: 'px-2 lg:px-5 py-1 lg:py-3 text-xs lg:text-sm',
+      1: 'px-2 lg:px-5 py-1 lg:py-3 text-xs lg:text-base',
       2: 'px-3 lg:px-6 py-3 lg:py-4 text-sm lg:text-base',
       3: 'px-4 lg:px-7 py-4 lg:py-5 text-base lg:text-lg',
       4: 'px-3 py-2 text-base',

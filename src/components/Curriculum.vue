@@ -26,6 +26,7 @@ const formatDuration = (minutes) => {
   if (mins == 0) return `${hours}h`
   else return `${hours}h ${mins}m`
 }
+
 const calculateLectures = (chapter) => {
   let count = 0
   chapter.files.forEach((file) => {

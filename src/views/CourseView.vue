@@ -8,7 +8,7 @@ import CourseMainSection from '@/components/CourseMainSection.vue'
 import FooterTop from '@/components/footers/FooterTop.vue'
 import FooterBottom from '@/components/footers/FooterBottom.vue'
 import BestSellingCourses from '@/components/BestSellingCourses.vue'
-
+import { useUserStore } from '@/stores/user'
 import { reactive, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
@@ -17,6 +17,7 @@ import axios from 'axios'
 const route = useRoute()
 const router = useRouter()
 const toast = useToast()
+const userStore = useUserStore()
 
 const courseId = route.params.id
 
@@ -71,6 +72,14 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
 })
+
+function checkIfOwnsCourse() {
+  if (!userStore.isSignedIn) return false
+  for (const ownedCourse of userStore.user.ownedCourses) {
+    if (ownedCourse.courseId == courseId) return true
+  }
+  return false
+}
 </script>
 
 <template>
@@ -84,6 +93,7 @@ onUnmounted(() => {
       <CourseSideBar
         v-if="!isNearPageEnd"
         :course="state.course"
+        :ownsCourse="checkIfOwnsCourse()"
         :class="['lg:transition-all lg:overflow-auto', isAtTop ? 'lg:top-[160px]' : 'lg:top-8']"
       />
     </transition>

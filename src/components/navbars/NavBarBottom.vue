@@ -24,10 +24,10 @@ const userState = computed(() => userStore.isSignedIn)
 </script>
 
 <template>
-  <section class="bg-white w-full mb-0 py-2 lg:py-2 px-4 lg:px-8 min-h-12 font-sans z-10">
+  <section class="bg-white w-full py-2 px-4 lg:px-8 z-10">
     <div class="flex flex-wrap items-center justify-center lg:justify-between">
       <!-- Left Section: Logo, Browse, and Search -->
-      <div class="flex flex-wrap items-center space-y-2 space-x-4 w-full lg:w-1/2">
+      <div class="flex flex-wrap items-center justify-center space-x-4 w-full lg:w-1/2">
         <!-- Logo -->
         <RouterLink to="/">
           <img class="h-8 lg:h-14 hidden lg:block" src="../../assets/img/logo.png" alt="ICE" />
@@ -93,16 +93,20 @@ const userState = computed(() => userStore.isSignedIn)
         <button class="relative">
           <BellIcon class="icon size-4 lg:size-6 text-font" />
           <div
-            class="absolute bottom-4 left-3 w-2.5 h-2.5 bg-primary rounded-full animate-ping"
+            class="absolute bottom-4 left-3 size-1 lg:size-2 bg-primary rounded-full animate-ping"
           ></div>
         </button>
         <button><HeartIcon class="icon size-4 lg:size-6 text-font" /></button>
         <button>
           <ShoppingCartIcon class="icon size-4 lg:size-6 text-font" />
         </button>
-        <button>
-          <img class="h-6 lg:h-12" src="../../assets/img/avatar.png" alt="avatar" />
-        </button>
+        <RouterLink to="/profile">
+          <img
+            class="size-6 lg:size-12 rounded-full object-cover"
+            :src="userStore.user.profilePicture"
+            alt="user-avatar"
+          />
+        </RouterLink>
       </div>
       <div v-else class="flex space-x-4 bg-transparent py-2">
         <RouterLink to="/sign-up">

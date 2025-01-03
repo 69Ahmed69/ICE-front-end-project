@@ -46,7 +46,7 @@ const bestInstructors = computed(() => {
       </div>
       <div
         v-else
-        class="flex flex-nowrap overflow-scroll lg:overflow-visible lg:flex-wrap max-w-80 lg:max-w-full gap-6 justify-center"
+        class="flex flex-nowrap overflow-scroll lg:overflow-visible lg:flex-wrap max-w-full gap-6 justify-center"
       >
         <InstructorCard
           v-for="(instructor, i) in bestInstructors"

@@ -2,7 +2,7 @@
 import Curriculum from './Curriculum.vue'
 import { reactive, onMounted } from 'vue'
 import HorizontalInstructorCard from './instructor cards/HorizontalInstructorCard.vue'
-import CourseFeedBack from './CourseFeedBack.vue'
+import CourseFeedBack from './FeedBackSection.vue'
 import RatingPercentage from './RatingPercentage.vue'
 import Rating from './Rating.vue'
 import { useRoute } from 'vue-router'
@@ -100,19 +100,19 @@ const removeEmptyReviews = (reviews) => {
   <section class="flex flex-col space-y-6 p-6 lg:pl-36 lg:space-y-12 lg:w-2/3">
     <div class="bg-background rounded-t-3xl">
       <div>
-        <!-- <div>
-        <video controls class="rounded-t-3xl w-full">
-          <source src="" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </div>" -->
-        <iframe
+        <div>
+          <video controls class="rounded-t-3xl w-full">
+            <source :src="`../../public/videos/${course.introVideo}`" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <!-- <iframe
           class="rounded-t-3xl w-full h-[480px]"
           src="https://www.youtube.com/embed/dCxSsr5xuL8"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
-        ></iframe>
+        ></iframe> -->
       </div>
       <div class="flex rounded-3xl border-b-2 border-primary text-gray_1 text-sans">
         <button

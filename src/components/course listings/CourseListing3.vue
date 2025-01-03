@@ -39,7 +39,7 @@ function daysLeft(discountEnd) {
 <template>
   <RouterLink :to="`course/${course.id}`">
     <div
-      :class="`bg-background rounded-3xl shadow-md w-full max-w-sm transition-transform duration-500 hover:scale-110 hover:z-10`"
+      :class="`bg-background rounded-3xl shadow-md w-full max-w-sm`"
       class="lg:max-w-60 transition-shadow duration-300 ease-out hover:shadow-xl hover:bg-fourth"
     >
       <!-- Image -->

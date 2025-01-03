@@ -4,16 +4,16 @@ export const useUserStore = defineStore('user', {
   state: () => ({
     isSignedIn: false, // Tracks if the user is signed in
     isInstuctor: false,
-    userName: null,
+    user: null,
   }),
   actions: {
-    signIn(userName) {
+    signIn(user) {
       this.isSignedIn = true
-      this.userName = userName // Set user details
+      this.user = user // Set user details
     },
     signOut() {
       this.isSignedIn = false
-      this.userName = null // Clear user details
+      this.user = null // Clear user details
     },
     makeInstructor() {
       this.isInstuctor = true

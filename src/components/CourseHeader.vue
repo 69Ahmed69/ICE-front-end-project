@@ -27,7 +27,7 @@ defineProps({
     <h1 class="text-lg lg:text-2xl text-font font-primary font-bold">{{ course.title }}</h1>
     <h2 class="text-sm lg:text-lg text-gray_2 font-sans">{{ course.subtitle }}</h2>
     <div class="flex justify-between items-center">
-      <div class="flex space-x-2 lg:space-3">
+      <div class="flex space-x-2 lg:space-x-3">
         <RouterLink :to="{ path: `/instructor/${course.instructor}` }"
           ><img
             :src="instructor.image"

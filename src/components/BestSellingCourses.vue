@@ -66,10 +66,11 @@ const colors = [
     </div>
     <div
       v-else
-      class="flex flex-nowrap overflow-scroll lg:overflow-visible lg:flex-wrap lg:max-w-full gap-6 justify-center items-center"
+      class="gap-6 lg:py-4 lg:px-20 lg:grid lg:grid-cols-4 lg:place-items-center lg:overflow-x-auto flex flex-nowrap justify-center items-center overflow-x-scroll"
     >
       <CourseListing
         v-for="(course, i) in state.courses.slice(0, limit || state.courses.length)"
+        :key="i"
         :index="i"
         :course="course"
         :category_bg="colors[i % colors.length].bg_color"
