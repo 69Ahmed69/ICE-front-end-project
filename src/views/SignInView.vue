@@ -4,7 +4,7 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
 import { useUserStore } from '@/stores/user'
 import IceButton from '@/components/ui elements/IceButton.vue'
 import { useToast } from 'vue-toastification'
-import { useRouter } from 'vue-router'
+import { useRouter, RouterLink } from 'vue-router'
 import { ref } from 'vue'
 import axios from 'axios'
 
@@ -60,7 +60,7 @@ const signIn = async () => {
     token += characters[randomIndex]
   }
 
-  const expiryTimestamp = Date.now() + 3 * 60 * 60 * 1000
+  const expiryTimestamp = Date.now() + 6 * 60 * 60 * 1000
 
   // Update the user's token in the database
   await axios.patch(`/api/users/${user.id}`, {
@@ -93,36 +93,30 @@ const signIn = async () => {
 </script>
 
 <template>
-  <nav class="w-full py-2 lg:py-3 shadow-xl lg:pl-24 fixed lg:pr-12 p-4 bg-white">
-    <div class="flex flex-col lg:flex-row lg:justify-between items-center font-primary gap-2">
-      <RouterLink to="/">
-        <div class="flex justify-center items-center gap-2">
-          <img class="h-10 lg:h-12" src="@/assets/img/logo.svg" alt="ice-logo" />
-          <h2 class="text-font font-primary font-bold text-sm lg:text-lg">
-            Integrated Classroom Environment
-          </h2>
-        </div>
-      </RouterLink>
+  <section class="bg-gray_4 flex flex-col min-h-screen">
+    <nav class="w-full py-2 lg:py-3 shadow-xl lg:pl-24 lg:pr-12 p-4 bg-white">
+      <div class="flex flex-col lg:flex-row lg:justify-between items-center font-primary gap-2">
+        <RouterLink to="/">
+          <div class="flex justify-center items-center gap-2">
+            <img class="h-10 lg:h-12" src="@/assets/img/logo.svg" alt="ice-logo" />
+            <h2 class="text-font font-primary font-bold text-sm lg:text-lg">
+              Integrated Classroom Environment
+            </h2>
+          </div>
+        </RouterLink>
 
-      <div class="hidden lg:items-center lg:gap-2 lg:flex">
-        <p class="text-xs lg:text-sm text-gray_1">Don't have an account?</p>
-        <router-link to="/sign-up" class="cta" href="#">
-          <IceButton :priority="4" :size="1" text="Sign Up" class="w-28 h-10" />
-        </router-link>
+        <div class="hidden lg:items-center lg:gap-2 lg:flex">
+          <p class="text-xs lg:text-sm text-gray_1">Don't have an account?</p>
+          <RouterLink to="/sign-up">
+            <IceButton :priority="4" :size="1" text="Sign Up" class="w-28 h-10" />
+          </RouterLink>
+        </div>
       </div>
-    </div>
-  </nav>
-  <main>
-    <div class="flex h-screen lg:h-auto justify-center items-center bg-gray_4">
+    </nav>
+    <div class="flex justify-center items-center">
       <!-- Left Section -->
       <div
-        class="lg:w-1/2 h-screen bg-gradient-to-t from-tertiary to-primary hidden lg:flex lg:items-center lg:justify-center"
-      >
-        <img class="object-cover" src="@/assets/img/Saly-10.svg" alt="illustration" />
-      </div>
-
-      <div
-        class="flex bg-white h-auto lg:h-full justify-center items-center shadow-xl lg:mx-10 mb-6 mt-20 lg:mt-24 rounded-3xl lg:w-1/2"
+        class="flex bg-white justify-center items-center shadow-xl lg:mx-10 my-6 lg:my-16 rounded-3xl lg:w-1/2"
       >
         <div class="flex flex-col gap-4 px-16 lg:px-24 py-8 lg:py-16 w-full h-full">
           <form
@@ -234,12 +228,12 @@ const signIn = async () => {
 
           <div class="lg:hidden items-center justify-center gap-2 flex">
             <p class="text-sm font-medium text-gray_1">Don't have an account?</p>
-            <router-link to="/sign-up" class="cta" href="#">
+            <RouterLink to="/sign-up">
               <IceButton :priority="2" :size="1" text="Sign Up" class="px-4" />
-            </router-link>
+            </RouterLink>
           </div>
         </div>
       </div>
     </div>
-  </main>
+  </section>
 </template>

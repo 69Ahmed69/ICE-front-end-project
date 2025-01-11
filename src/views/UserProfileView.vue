@@ -6,6 +6,7 @@ import FooterTop from '@/components/footers/FooterTop.vue'
 import FooterBottom from '@/components/footers/FooterBottom.vue'
 import IceButton from '@/components/ui elements/IceButton.vue'
 import UserDashboard from '@/components/user pages/UserDashboard.vue'
+import UserWishlist from '@/components/user pages/UserWishlist.vue'
 import { ref, reactive, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
@@ -177,7 +178,7 @@ const signOut = async () => {
         <div v-else-if="selectedPage == 'Courses'">THIS IS COURSES</div>
         <div v-else-if="selectedPage == 'Instructors'">THIS IS INSTRUCTORS</div>
         <div v-else-if="selectedPage == 'Messages'">THIS IS MESSAGES</div>
-        <div v-else-if="selectedPage == 'Wishlisht'">THIS IS WISHLIST</div>
+        <UserWishlist v-else-if="selectedPage == 'Wishlist'" />
         <div v-else-if="selectedPage == 'Purchase History'">THIS IS PURCHASE HISTORY</div>
         <div v-else>THIS IS SETTINGS</div>
       </div>

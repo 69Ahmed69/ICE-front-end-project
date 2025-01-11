@@ -13,6 +13,14 @@ const restartAnimation = () => {
   })
 }
 
+defineProps({
+  size: {
+    type: Number,
+    required: false,
+    default: 150,
+  },
+})
+
 let animationInterval
 
 onMounted(() => {
@@ -29,9 +37,9 @@ onBeforeUnmount(() => {
   <div>
     <svg
       id="snowflake"
-      width="150"
-      height="150"
-      viewBox="0 0 150 150"
+      :width="size"
+      :height="size"
+      :viewBox="`0 0 150 150`"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >

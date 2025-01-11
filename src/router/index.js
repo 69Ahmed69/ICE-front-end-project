@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useRouter } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import CoursesView from '@/views/CoursesView.vue'
 import CourseView from '@/views/CourseView.vue'
@@ -10,7 +11,10 @@ import SignUpView from '@/views/SignUpView.vue'
 import BecomeInstructorView from '@/views/BecomeInstructorView.vue'
 import UserProfileView from '@/views/UserProfileView.vue'
 import WatchCourseView from '@/views/WatchCourseView.vue'
+import ShoppingCartView from '@/views/ShoppingCartView.vue'
+import CheckOutView from '@/views/CheckOutView.vue'
 import { useUserStore } from '@/stores/user'
+import { useToast } from 'vue-toastification'
 import axios from 'axios'
 
 const router = createRouter({
@@ -47,6 +51,16 @@ const router = createRouter({
       component: WatchCourseView,
     },
     {
+      path: '/shopping-cart/',
+      name: 'shoppingCart',
+      component: ShoppingCartView,
+    },
+    {
+      path: '/check-out/',
+      name: 'checkOut',
+      component: CheckOutView,
+    },
+    {
       path: '/instructor/:id',
       name: 'instructor',
       component: InstructorView,
@@ -80,6 +94,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
+  const toast = useToast()
 
   // Verify token if the user is not signed in
   if (!userStore.isSignedIn) {
@@ -92,11 +107,25 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if (to.name === 'profile' && !userStore.isSignedIn) {
+    toast.error('Please sign in to access your profile.')
     return next('/') // Redirect non-signed-in users away from the profile page
   }
 
-  if (to.name === 'becomeAnInstructor' && userStore.isInstuctor) {
-    return next('/') // Redirect instructors away from the become-an-instructor page
+  if (to.name === 'shoppingCart' && !userStore.isSignedIn) {
+    toast.error('Please sign-in to access your shopping cart.')
+    return next('/')
+  }
+
+  if (to.name === 'checkOut') {
+    if (!userStore.isSignedIn) {
+      toast.error('You have to be logged-in to buy a course.')
+      return next('/')
+    } else {
+      if (localStorage.getItem('cameFromCart') !== 'true') {
+        // Redirect to cart if the user didn't come from there
+        return next('/shopping-cart/')
+      }
+    }
   }
 
   if (to.name === 'watch-course') {
@@ -126,6 +155,8 @@ const getCookie = (name) => {
 
 const verifyToken = async () => {
   const userStore = useUserStore()
+  const toast = useToast()
+  const router = useRouter()
   const token = getCookie('ice-token')
   const username = getCookie('username')
   if (!token) {
@@ -157,16 +188,22 @@ const verifyToken = async () => {
         })
         userStore.signOut()
         userStore.removeInstructor()
+        router.push('/')
+        toast.error('Your session has expired.')
       }
     } else {
       console.warn('Invalid token')
       userStore.signOut()
       userStore.removeInstructor()
+      router.push('/')
+      toast.error('Invalid session token.')
     }
   } catch (error) {
     console.error('Token verification error:', error)
     userStore.signOut()
     userStore.removeInstructor()
+    router.push('/')
+    toast.error('Token verification error.')
   }
 }
 

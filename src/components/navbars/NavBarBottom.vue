@@ -24,10 +24,10 @@ const userState = computed(() => userStore.isSignedIn)
 </script>
 
 <template>
-  <section class="bg-white w-full py-2 px-4 lg:px-8 z-10">
-    <div class="flex flex-wrap items-center justify-center lg:justify-between">
+  <section class="bg-white w-full py-2 px-4 lg:px-8 z-10 shadow-lg">
+    <div class="flex flex-wrap lg:flex-nowrap items-center justify-center lg:justify-between">
       <!-- Left Section: Logo, Browse, and Search -->
-      <div class="flex flex-wrap items-center justify-center space-x-4 w-full lg:w-1/2">
+      <div class="flex items-center space-x-4 w-full lg:w-3/4">
         <!-- Logo -->
         <RouterLink to="/">
           <img class="h-8 lg:h-14 hidden lg:block" src="../../assets/img/logo.png" alt="ICE" />
@@ -53,7 +53,7 @@ const userState = computed(() => userStore.isSignedIn)
             leave-to-class="transform opacity-0 scale-95"
           >
             <MenuItems
-              class="absolute left-0 lg:right-0 mt-2 z-10 w-36 lg:w-56 rounded-3xl bg-background shadow-lg shadow-primary_trans ring-1 ring-gray_3 focus:outline-none"
+              class="absolute left-0 lg:right-0 mt-2 z-10 w-36 lg:w-56 rounded-3xl bg-background shadow-lg ring-1 ring-gray_3 focus:outline-none"
             >
               <div class="py-1">
                 <!-- Dynamic rendering of menu items -->
@@ -89,20 +89,26 @@ const userState = computed(() => userStore.isSignedIn)
       </div>
 
       <!-- Right Section: User buttons -->
-      <div v-if="userState" class="flex items-center space-x-2 lg:space-x-4 bg-transparent py-2">
+      <div v-if="userState" class="flex items-center space-x-4 bg-transparent py-2">
         <button class="relative">
-          <BellIcon class="icon size-4 lg:size-6 text-font" />
+          <BellIcon class="icon size-5 lg:size-6 text-font hover:text-primary" />
           <div
             class="absolute bottom-4 left-3 size-1 lg:size-2 bg-primary rounded-full animate-ping"
           ></div>
         </button>
-        <button><HeartIcon class="icon size-4 lg:size-6 text-font" /></button>
-        <button>
-          <ShoppingCartIcon class="icon size-4 lg:size-6 text-font" />
-        </button>
+        <button><HeartIcon class="icon size-5 lg:size-6 text-font hover:text-primary" /></button>
+        <RouterLink to="/shopping-cart/" class="relative">
+          <ShoppingCartIcon class="icon size-5 lg:size-6 text-font hover:text-primary" />
+          <span
+            v-if="userStore.user.shoppingCart.length > 0"
+            class="absolute top-0 right-0 -mt-1 -mr-1 flex size-3 lg:size-4 items-center justify-center rounded-full bg-danger text-white text-xs font-bold"
+          >
+            {{ userStore.user.shoppingCart.length }}
+          </span>
+        </RouterLink>
         <RouterLink to="/profile">
           <img
-            class="size-6 lg:size-12 rounded-full object-cover"
+            class="size-8 lg:size-12 rounded-full object-cover"
             :src="userStore.user.profilePicture"
             alt="user-avatar"
           />
@@ -110,10 +116,12 @@ const userState = computed(() => userStore.isSignedIn)
       </div>
       <div v-else class="flex space-x-4 bg-transparent py-2">
         <RouterLink to="/sign-up">
-          <IceButton text="Create Account" :priority="4" :size="1"
+          <IceButton text="Create Account" :priority="4" :size="1" class="py-2"
         /></RouterLink>
 
-        <RouterLink to="/sign-in"> <IceButton text="Sign-in" :priority="1" :size="1" /></RouterLink>
+        <RouterLink to="/sign-in">
+          <IceButton text="Sign-in" :priority="1" :size="1" class="py-2"
+        /></RouterLink>
       </div>
     </div>
   </section>

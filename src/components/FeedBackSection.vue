@@ -50,7 +50,7 @@ const handleSelect = (rating) => {
         <MenuButton
           class="flex justify-between w-full px-4 items-center gap-x-1.5 py-2 lg:py-3 text-sm lg:text-base font-semibold shadow-md ring-1 ring-inset rounded-3xl bg-background text-font hover:bg-fourth ring-tertiary"
         >
-          {{ selectedRating }} Star reviews
+          {{ selectedRating }} star reviews
           <ChevronDownIcon class="size-3 lg:size-5 text-font" aria-hidden="true" />
         </MenuButton>
         <transition
@@ -74,7 +74,7 @@ const handleSelect = (rating) => {
                       'block w-full px-4 py-2 text-left text-xs lg:text-sm hover:bg-fourth rounded-3xl',
                     ]"
                   >
-                    {{ rating }} Star reviews
+                    {{ rating }} star reviews
                   </button>
                 </MenuItem>
               </template>

@@ -24,6 +24,25 @@ export const useUserStore = defineStore('user', {
   },
 })
 
+export const useCheckoutStore = defineStore('checkout', {
+  state: () => ({
+    total: 0,
+    subtotal: 0,
+    coupon: null,
+  }),
+  actions: {
+    changeTotal(total, subtotal) {
+      ;(this.total = total), (this.subtotal = subtotal)
+    },
+    applyCoupon(coupon) {
+      this.coupon = coupon
+    },
+    removeCoupon() {
+      this.coupon = null
+    },
+  },
+})
+
 export const usePrefrencesStore = defineStore('prefrences', {
   state: () => ({
     language: 'English',

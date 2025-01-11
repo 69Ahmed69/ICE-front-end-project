@@ -6,6 +6,7 @@ import FooterTop from '@/components/footers/FooterTop.vue'
 import FooterBottom from '@/components/footers/FooterBottom.vue'
 import IceButton from '@/components/ui elements/IceButton.vue'
 import WatchCourseMainSection from '@/components/WatchCourseMainSection.vue'
+import ReviewPopup from '@/components/popups/ReviewPopup.vue'
 import {
   ArrowLeftIcon,
   FolderIcon,
@@ -26,6 +27,38 @@ const route = useRoute()
 const router = useRouter()
 const toast = useToast()
 const userStore = useUserStore()
+
+const showModal = ref(false)
+
+function openModal() {
+  showModal.value = true
+}
+
+const handlePostReview = async (feedback, reviewValue) => {
+  const review = {
+    userId: userStore.user.id,
+    isCourse: 1,
+    subjectId: state.course.id,
+    content: feedback,
+    created: new Date(),
+    rating: reviewValue,
+    numLikes: 0,
+  }
+
+  try {
+    const response = await axios.post('/api/reviews', review) // Corrected: Pass the review object as the body
+    toast.success('Review posted successfully')
+  } catch (error) {
+    console.error('Error posting review:', error)
+    toast.error('Failed to post review')
+  }
+
+  showModal.value = false // Close the modal
+}
+
+function handleCancelReview() {
+  showModal.value = false // Close the modal
+}
 
 function goBack() {
   router.go(-1)
@@ -405,14 +438,16 @@ onUnmounted(() => {
           :priority="4"
           :size="1"
           class="basis-1/2 lg:basis-auto lg:w-full"
+          @click="openModal"
         />
         <IceButton
           text="Next Lecture"
           :priority="1"
           :size="1"
           class="basis-1/2 lg:basis-auto lg:w-full"
-          @click="nextLecture()"
+          @click="nextLecture"
         />
+        <ReviewPopup v-if="showModal" @confirm="handlePostReview" @cancel="handleCancelReview" />
       </div>
     </div>
 
@@ -420,7 +455,7 @@ onUnmounted(() => {
       <div
         v-if="!isNearPageEnd"
         :class="[
-          'lg:transition-all lg:overflow-auto bg-transparent rounded-b-3xl gap-2 lg:gap-6 px-4 lg:py-6 flex flex-col mx-4 lg:mx-0 lg:mt-0 mt-8 md:w-2/5  lg:right-4 lg:z-50  lg:fixed ',
+          'lg:transition-all lg:overflow-auto bg-transparent rounded-b-3xl gap-2 lg:gap-6 px-4 lg:py-6 flex flex-col mx-4 lg:mx-0 lg:mt-0 mt-8 md:w-2/5  lg:right-4 lg:z-40  lg:fixed ',
           isAtTop ? 'lg:top-[210px]' : 'lg:top-4',
         ]"
       >

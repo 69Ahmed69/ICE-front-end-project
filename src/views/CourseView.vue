@@ -8,6 +8,7 @@ import CourseMainSection from '@/components/CourseMainSection.vue'
 import FooterTop from '@/components/footers/FooterTop.vue'
 import FooterBottom from '@/components/footers/FooterBottom.vue'
 import BestSellingCourses from '@/components/BestSellingCourses.vue'
+
 import { useUserStore } from '@/stores/user'
 import { reactive, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -86,16 +87,19 @@ function checkIfOwnsCourse() {
   <NavBarTop />
   <NavBarBottom />
   <section v-if="!state.isLoading">
-    <div class="flex flex-wrap bg-gray_4 lg:space-x-12 lg:pt-4 lg:max-h-80 lg:pr-12">
+    <div class="flex flex-wrap bg-gray_4 lg:space-x-12 lg:pt-4 lg:pr-12">
       <CourseHeader :course="state.course" :instructor="state.instructor" />
     </div>
     <transition name="sidebar-fade">
-      <CourseSideBar
+      <div
         v-if="!isNearPageEnd"
-        :course="state.course"
-        :ownsCourse="checkIfOwnsCourse()"
-        :class="['lg:transition-all lg:overflow-auto', isAtTop ? 'lg:top-[160px]' : 'lg:top-8']"
-      />
+        :class="[
+          'lg:transition-all lg:fixed lg:w-[300px] lg:overflow-y-auto lg:max-h-screen lg:bg-white lg:shadow-md lg:rounded',
+          isAtTop ? 'lg:top-[160px]' : 'lg:top-8',
+        ]"
+      >
+        <CourseSideBar :course="state.course" :ownsCourse="checkIfOwnsCourse()" />
+      </div>
     </transition>
     <CourseMainSection :course="state.course" :instructor="state.instructor" />
     <div id="pageEnd" ref="pageEndRef" class="bg-gray_4">

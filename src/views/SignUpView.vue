@@ -3,9 +3,8 @@ import { ArrowRightIcon, CheckIcon } from '@heroicons/vue/20/solid'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
 import { ref, reactive, onMounted } from 'vue'
 import IceButton from '@/components/ui elements/IceButton.vue'
-import LoadingAnimation from '@/components/LoadingAnimation.vue'
 import { useToast } from 'vue-toastification'
-import { useRouter } from 'vue-router'
+import { useRouter, RouterLink } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import axios from 'axios'
 
@@ -202,7 +201,7 @@ const handleSubmit = async () => {
       const randomIndex = Math.floor(Math.random() * characters.length)
       token += characters[randomIndex]
     }
-    const expiryTimestamp = Date.now() + 3 * 60 * 60 * 1000
+    const expiryTimestamp = Date.now() + 6 * 60 * 60 * 1000
 
     // Register user
     await axios.post('/api/users', {
@@ -217,6 +216,8 @@ const handleSubmit = async () => {
       profilePicture: 'https://i.imgur.com/X6SlXuE.jpeg',
       biography: '',
       password: password.value,
+      shoppingCart: [],
+      wishlist: [],
       isInstructor: false,
       ownedCourses: [],
     })
@@ -263,34 +264,29 @@ onMounted(() => {
 </script>
 
 <template>
-  <nav class="w-full py-2 lg:py-3 shadow-xl lg:pl-24 lg:pr-12 p-4 bg-white">
-    <div class="flex flex-col lg:flex-row lg:justify-between items-center font-primary gap-2">
-      <RouterLink to="/">
-        <div class="flex justify-center items-center gap-2">
-          <img class="h-10 lg:h-12" src="@/assets/img/logo.svg" alt="ice-logo" />
-          <h2 class="text-font font-primary font-bold text-sm lg:text-lg">
-            Integrated Classroom Environment
-          </h2>
+  <section class="bg-gray_4 flex flex-col min-h-screen">
+    <nav class="w-full py-2 lg:py-3 shadow-xl lg:pl-24 lg:pr-12 p-4 bg-white">
+      <div class="flex flex-col lg:flex-row lg:justify-between items-center font-primary gap-2">
+        <RouterLink to="/">
+          <div class="flex justify-center items-center gap-2">
+            <img class="h-10 lg:h-12" src="@/assets/img/logo.svg" alt="ice-logo" />
+            <h2 class="text-font font-primary font-bold text-sm lg:text-lg">
+              Integrated Classroom Environment
+            </h2>
+          </div>
+        </RouterLink>
+
+        <div class="hidden lg:items-center lg:gap-2 lg:flex">
+          <p class="text-xs lg:text-sm text-gray_1">Already have an account?</p>
+          <RouterLink to="/sign-in">
+            <IceButton :priority="4" :size="1" text="Sign In" class="w-28 h-10" />
+          </RouterLink>
         </div>
-      </RouterLink>
-      <div class="hidden lg:items-center lg:gap-2 lg:flex">
-        <p class="text-xs lg:text-sm text-gray_1">Already have an account?</p>
-        <router-link to="/sign-in" class="cta" href="#">
-          <IceButton :priority="4" :size="1" text="Sign In" class="w-28 h-10" />
-        </router-link>
       </div>
-    </div>
-  </nav>
-  <main v-if="!state.isLoading">
-    <div class="flex h-screen lg:h-auto justify-center items-center bg-gray_4">
-      <!-- Left Section -->
+    </nav>
+    <div class="flex justify-center items-center">
       <div
-        class="lg:w-1/2 h-screen bg-gradient-to-t from-tertiary to-primary hidden lg:flex lg:items-center lg:justify-center"
-      >
-        <img class="object-cover" src="@/assets/img/Saly.svg" alt="illustration" />
-      </div>
-      <div
-        class="flex bg-white items-center justify-center shadow-xl mx-2 lg:mx-10 my-auto rounded-3xl lg:w-1/2"
+        class="flex bg-white justify-center items-center shadow-xl mx-4 lg:mx-10 my-6 lg:mt-10 rounded-3xl lg:w-1/2"
       >
         <div class="flex flex-col w-full gap-2 px-10 lg:gap-4 lg:px-16 py-8 lg:py-12">
           <form
@@ -485,15 +481,12 @@ onMounted(() => {
 
           <div class="lg:hidden items-center justify-center gap-2 flex">
             <p class="text-sm font-medium text-gray_1">Already have an account?</p>
-            <router-link to="/sign-in" class="cta" href="#">
+            <RouterLink to="/sign-in">
               <IceButton :priority="2" :size="1" text="Sign In" class="px-4" />
-            </router-link>
+            </RouterLink>
           </div>
         </div>
       </div>
     </div>
-  </main>
-  <div v-else class="flex items-center justify-center">
-    <LoadingAnimation />
-  </div>
+  </section>
 </template>

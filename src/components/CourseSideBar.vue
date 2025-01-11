@@ -1,5 +1,6 @@
 <script setup>
 import IceButton from './ui elements/IceButton.vue'
+import LogInPopup from '@/components/popups/LogInPopup.vue'
 import {
   ClockIcon,
   ChartBarSquareIcon,
@@ -9,20 +10,96 @@ import {
   LanguageIcon,
   DocumentDuplicateIcon,
   ShoppingCartIcon,
+  XMarkIcon,
   BanknotesIcon,
   EnvelopeIcon,
+  HeartIcon,
   ComputerDesktopIcon,
 } from '@heroicons/vue/24/outline'
-import { ref } from 'vue'
+import { ref, onMounted, defineProps } from 'vue'
 import { useToast } from 'vue-toastification'
+import { useUserStore } from '@/stores/user'
+import { removeFromCart, addToCart, isInCart } from '@/utils/CartUtils'
+import { removeFromWishlist, addToWishlist, isInWishlist } from '@/utils/WishlistUtils'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
+const userStore = useUserStore()
 const toast = useToast()
 const courseUrl = ref(window.location.href)
+const inCart = ref(false)
+const inWishlist = ref(false)
 
-defineProps({
+const props = defineProps({
   course: Object,
   ownsCourse: Boolean,
 })
+
+const showModal = ref(false)
+const modalText = ref('')
+
+function openModal(text) {
+  modalText.value = text
+  showModal.value = true
+}
+
+function closeModal() {
+  showModal.value = false
+}
+
+onMounted(() => {
+  if (userStore.isSignedIn) {
+    inCart.value = isInCart(props.course.id, userStore, toast)
+    inWishlist.value = isInWishlist(props.course.id, userStore, toast)
+  }
+})
+
+function buyCourse(courseId) {
+  if (!userStore.isSignedIn) {
+    openModal('Please Log-in to your account or create one, to buy this course.')
+  } else {
+    if (!inCart.value) {
+      addToCart(courseId, userStore, toast)
+    }
+    router.push('/shopping-cart/')
+  }
+}
+
+function handleAddToCart(courseId) {
+  if (!userStore.isSignedIn) {
+    openModal('Please Log-in to your account or create one, to add this course to your cart.')
+  } else {
+    addToCart(courseId, userStore, toast)
+    inCart.value = true
+  }
+}
+
+function handleRemoveFromCart(courseId) {
+  if (userStore.isSignedIn) {
+    removeFromCart(courseId, userStore, toast)
+    inCart.value = false
+  }
+}
+
+function handleAddToWishlist(courseId) {
+  if (!userStore.isSignedIn) {
+    openModal('Please Log-in to your account or create one, to add this course to your wishlist.')
+  } else {
+    addToWishlist(courseId, userStore, toast)
+    inWishlist.value = true
+  }
+}
+
+function handleRemoveFromWishlist(courseId) {
+  if (userStore.isSignedIn) {
+    removeFromWishlist(courseId, userStore, toast)
+    inWishlist.value = false
+  }
+}
+
+function giftCourse() {
+  //TO DO
+}
 
 function daysLeft(discountEnd) {
   const today = new Date()
@@ -89,42 +166,45 @@ const shareOnWhatsApp = () => {
 
 <template>
   <div
-    class="flex flex-col mx-16 lg:mx-0 lg:mt-0 mt-8 divide-y-2 divide-tertiary md:w-1/4 bg-background rounded-3xl border-2 border-tertiary shadow-lg lg:right-16 lg:z-50 ease-in duration-500 lg:fixed hover:shadow-xl transition-shadow hover:shadow-gray_2"
+    class="flex flex-col mx-16 lg:mx-0 lg:mt-0 mt-8 divide-y-2 divide-tertiary lg:w-1/4 bg-background rounded-3xl border-2 border-tertiary shadow-lg lg:right-16 lg:z-50 ease-in duration-500 lg:fixed hover:shadow-xl transition-shadow hover:shadow-gray_2"
   >
     <div class="space-y-1 p-6 pb-4">
       <div class="flex justify-between items-center">
         <div class="space-x-1">
           <span
-            v-if="course.price - course.discount > 0 && daysLeft(course.discountEnd) != ''"
+            v-if="
+              props.course.price - props.course.discount > 0 &&
+              daysLeft(props.course.discountEnd) != ''
+            "
             class="text-font font-bold font-primary text-xl"
           >
-            ${{ (course.price - course.discount).toFixed(2) }}
+            ${{ (props.course.price - props.course.discount).toFixed(2) }}
           </span>
           <span
-            v-else-if="daysLeft(course.discountEnd) == ''"
+            v-else-if="daysLeft(props.course.discountEnd) == ''"
             class="text-font font-bold font-primary text-xl"
-            >${{ course.price.toFixed(2) }}</span
+            >${{ props.course.price.toFixed(2) }}</span
           >
           <span v-else class="text-danger font-primary text-xl font-bold">FREE</span>
           <span
-            v-if="course.discount > 0 && daysLeft(course.discountEnd) != ''"
+            v-if="props.course.discount > 0 && daysLeft(props.course.discountEnd) != ''"
             class="text-gray_3 line-through font-primary text-sm"
           >
-            ${{ course.price.toFixed(2) }}
+            ${{ props.course.price.toFixed(2) }}
           </span>
         </div>
         <span
-          v-if="course.discount > 0 && daysLeft(course.discountEnd) != ''"
+          v-if="props.course.discount > 0 && daysLeft(props.course.discountEnd) != ''"
           class="bg-fourth rounded-3xl px-2 py-1 text-primary font-medium font-primary text-sm"
-          >{{ ((course.discount * 100) / course.price).toFixed(0) }}% OFF</span
+          >{{ ((props.course.discount * 100) / props.course.price).toFixed(0) }}% OFF</span
         >
       </div>
       <div
-        v-if="course.discount > 0 && daysLeft(course.discountEnd) != ''"
+        v-if="props.course.discount > 0 && daysLeft(props.course.discountEnd) != ''"
         class="text-danger flex text-xs gap-1 font-medium items-center"
       >
         <ClockIcon class="size-4" />
-        {{ daysLeft(course.discountEnd) }}
+        {{ daysLeft(props.course.discountEnd) }}
       </div>
     </div>
 
@@ -134,28 +214,28 @@ const shareOnWhatsApp = () => {
           <ClockIcon class="size-5 text-primary" />
           <span class="text-gray_1">Course Duration</span>
         </div>
-        <span class="text-gray_2">{{ course.duration }} hours</span>
+        <span class="text-gray_2">{{ props.course.duration }} hours</span>
       </div>
       <div class="flex justify-between items-center text-sm">
         <div class="flex gap-1 items-center">
           <ChartBarSquareIcon class="size-5 text-primary" />
           <span class="text-gray_1">Course Level</span>
         </div>
-        <span class="text-gray_2">{{ textifyLevel(course.level) }}</span>
+        <span class="text-gray_2">{{ textifyLevel(props.course.level) }}</span>
       </div>
       <div class="flex justify-between items-center text-sm">
         <div class="flex gap-1 items-center">
           <UsersIcon class="size-5 text-primary" />
           <span class="text-gray_1">Students Enrolled</span>
         </div>
-        <span class="text-gray_2">{{ formatNumber(course.students) }}</span>
+        <span class="text-gray_2">{{ formatNumber(props.course.students) }}</span>
       </div>
       <div class="flex justify-between items-center text-sm">
         <div class="flex gap-1 items-center">
           <LanguageIcon class="size-5 text-primary" />
           <span class="text-gray_1">Language</span>
         </div>
-        <span class="text-gray_2">{{ course.language }}</span>
+        <span class="text-gray_2">{{ props.course.language }}</span>
       </div>
       <div class="flex justify-between items-center text-sm">
         <div class="flex gap-1 items-center">
@@ -173,26 +253,77 @@ const shareOnWhatsApp = () => {
         :size="4"
         :icon="BanknotesIcon"
         position="right"
+        @click="buyCourse(props.course.id)"
       />
-      <IceButton
-        class="w-full"
-        text="Add to Cart"
-        :priority="4"
-        :size="4"
-        :icon="ShoppingCartIcon"
-        position="right"
-      />
-      <div class="flex justify-stretch space-x-2 w-full">
-        <IceButton text="Add to Wishlist" :priority="8" :size="1" class="w-1/2" />
-        <IceButton text="Gift Course" :priority="8" :size="1" class="w-1/2" />
+      <transition name="flip">
+        <div class="relative w-full">
+          <transition name="flip" mode="out-in">
+            <IceButton
+              v-if="!inCart"
+              key="add-to-cart"
+              class="w-full"
+              text="Add to Cart"
+              :priority="4"
+              :size="4"
+              :icon="ShoppingCartIcon"
+              position="right"
+              @click="handleAddToCart(props.course.id)"
+            />
+            <IceButton
+              v-else
+              key="remove-from-cart"
+              class="w-full"
+              text="Remove from Cart"
+              :priority="4"
+              :size="4"
+              :icon="XMarkIcon"
+              position="right"
+              @click="handleRemoveFromCart(props.course.id)"
+            />
+          </transition>
+        </div>
+      </transition>
+
+      <div class="grid grid-cols-2 gap-2 w-full">
+        <transition name="flip">
+          <div class="relative w-full">
+            <transition name="flip" mode="out-in">
+              <IceButton
+                v-if="!inWishlist"
+                key="add-to-wishlist"
+                text="Wishlist"
+                :priority="8"
+                :size="1"
+                class="w-full"
+                :icon="HeartIcon"
+                position="right"
+                @click="handleAddToWishlist(props.course.id)"
+              />
+              <IceButton
+                v-else
+                key="remove-from-wishlist"
+                text="Unwish"
+                :priority="8"
+                :size="1"
+                class="w-full"
+                :icon="XMarkIcon"
+                position="right"
+                @click="handleRemoveFromWishlist(props.course.id)"
+              />
+            </transition>
+          </div>
+        </transition>
+        <IceButton text="Gift Course" :priority="8" :size="1" class="w-full" @click="giftCourse" />
       </div>
+
       <span class="text-xs text-gray_3"
-        ><b>Note: </b>all course have 30-days money-back guarantee</span
+        ><b>Note: </b>all courses have 30-days money-back guarantee</span
       >
+      <LogInPopup v-if="showModal" @cancel="closeModal" :text="modalText" />
     </div>
     <div v-else class="px-4 py-4 flex flex-col w-full space-y-2">
       <h2 class="text-lg font-medium text-font text-center">You already own this course</h2>
-      <RouterLink :to="`/watch-course/${course.id}`">
+      <RouterLink :to="`/watch-course/${props.course.id}`">
         <IceButton text="Watch Lecture" :priority="4" :size="4" class="w-full" />
       </RouterLink>
     </div>
@@ -241,3 +372,25 @@ const shareOnWhatsApp = () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Flip animation styles */
+.flip-enter-active,
+.flip-leave-active {
+  transition:
+    transform 0.3s,
+    opacity 0.3s;
+}
+
+.flip-enter-from,
+.flip-leave-to {
+  transform: rotateX(90deg);
+  opacity: 0;
+}
+
+.flip-enter-to,
+.flip-leave-from {
+  transform: rotateX(0);
+  opacity: 1;
+}
+</style>
