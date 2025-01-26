@@ -17,6 +17,7 @@ import Request from '@/views/RequestView.vue'
 import AdminView from '@/views/AdminView.vue'
 import ForumView from '@/views/ForumView.vue'
 import QuestionView from '@/views/QuestionView.vue'
+import Courses2View from '@/views/Courses2View.vue'
 import { useUserStore } from '@/stores/user'
 import { useToast } from 'vue-toastification'
 import dayjs from 'dayjs'
@@ -49,6 +50,11 @@ const router = createRouter({
       path: '/courses/',
       name: 'courses',
       component: CoursesView,
+    },
+    {
+      path: '/courses_/',
+      name: 'courses_',
+      component: Courses2View,
     },
     {
       path: '/category/:categoryId',

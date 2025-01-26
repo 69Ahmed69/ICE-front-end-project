@@ -56,13 +56,13 @@ onMounted(async () => {
   }
 })
 </script>
-
 <template>
   <NavBarTop />
   <NavBarBottom />
   <section v-if="!state.isLoading" class="my-2 lg:my-10">
     <BestSellingCourses
       :limit="5"
+      :category="state.category"
       :perRow="5"
       :showButton="false"
       :title="`Best selling courses in ${state.category.name}`"

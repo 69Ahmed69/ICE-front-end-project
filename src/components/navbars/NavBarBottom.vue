@@ -4,6 +4,7 @@ import { RouterLink } from 'vue-router'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import IceButton from '../ui elements/IceButton.vue'
 import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router'
 import {
   ChevronDownIcon,
   MagnifyingGlassIcon,
@@ -12,6 +13,13 @@ import {
   HeartIcon,
 } from '@heroicons/vue/24/outline'
 import axios from 'axios'
+
+const searchQuery = ref('')
+const router = useRouter()
+
+const goToCourses = () => {
+  router.push({ path: '/courses', query: { search: searchQuery.value } })
+}
 
 const state = reactive({
   categories: [],
@@ -90,16 +98,21 @@ const userState = computed(() => userStore.isSignedIn)
         </Menu>
 
         <!-- Search Bar -->
-        <div
+
+        <form
+          @submit.prevent="goToCourses"
           class="flex grow items-center w-full lg:w-auto max-w-full lg:max-w-72 bg-white shadow-md rounded-full ring-1 ring-gray_3 hover:ring-tertiary focus-within:ring-2 focus-within:ring-primary"
         >
-          <MagnifyingGlassIcon class="w-5 lg:w-6 text-gray_2 ml-4" />
+          <button type="submit">
+            <MagnifyingGlassIcon class="w-5 lg:w-6 text-gray_2 ml-4 hover:text-primary" />
+          </button>
           <input
+            v-model="searchQuery"
             type="text"
             placeholder="What do you want to learn..."
             class="flex-1 text-xs lg:text-base bg-transparent px-2 lg:px-4 py-2 lg:py-3 rounded-full text-gray_1 focus:outline-none"
           />
-        </div>
+        </form>
       </div>
 
       <!-- Right Section: User buttons -->

@@ -7,10 +7,9 @@ import FooterBottom from '@/components/footers/FooterBottom.vue'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import CourseListing from '@/components/course listings/CourseListing3.vue'
 import IceButton from '@/components/ui elements/IceButton.vue'
-import { useUserStore } from '@/stores/user'
-import { reactive, onMounted, ref, computed, defineProps } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useToast } from 'vue-toastification'
+import { reactive, onMounted, ref, computed } from 'vue'
+import DropDownFilter from '@/components/DropDownFilter.vue'
+
 import axios from 'axios'
 import {
   ChevronDownIcon,
@@ -19,11 +18,7 @@ import {
   MagnifyingGlassIcon,
   AdjustmentsVerticalIcon,
 } from '@heroicons/vue/24/outline'
-
-const route = useRoute()
-const router = useRouter()
-const toast = useToast()
-const userStore = useUserStore()
+import FilterComponent from '@/components/FilterComponent.vue'
 
 const state = reactive({
   courses: [],
