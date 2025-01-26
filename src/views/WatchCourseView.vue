@@ -46,7 +46,7 @@ const handlePostReview = async (feedback, reviewValue) => {
   }
 
   try {
-    const response = await axios.post('/api/reviews', review) // Corrected: Pass the review object as the body
+    const response = await axios.post('/api/reviews', review)
     toast.success('Review posted successfully')
   } catch (error) {
     console.error('Error posting review:', error)

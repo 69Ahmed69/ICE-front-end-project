@@ -7,26 +7,20 @@ import FooterBottom from '@/components/footers/FooterBottom.vue'
 import IceButton from '@/components/ui elements/IceButton.vue'
 import UserDashboard from '@/components/user pages/UserDashboard.vue'
 import UserWishlist from '@/components/user pages/UserWishlist.vue'
+import UserSettings from '@/components/user pages/UserSettings.vue'
 import { ref, reactive, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import { ArrowRightIcon, ArrowLeftEndOnRectangleIcon } from '@heroicons/vue/24/outline'
+import dayjs from 'dayjs'
 import axios from 'axios'
 
 const router = useRouter()
 const toast = useToast()
 const userStore = useUserStore()
 
-const pages = [
-  'Dashboard',
-  'Courses',
-  'Instructors',
-  'Messages',
-  'Wishlist',
-  'Purchase History',
-  'Settings',
-]
+const pages = ['Dashboard', 'Courses', 'Wishlist', 'Settings']
 
 const selectedPage = ref('Dashboard')
 
@@ -34,30 +28,50 @@ const state = reactive({
   isLoading: false,
   courses: [],
   instructors: [],
+  request: null,
 })
 
 onMounted(async () => {
   try {
-    const fetchedCourses = []
-    for (const course of userStore.user.ownedCourses) {
-      const response = await axios.get(`/api/courses/${course.courseId}`)
-      fetchedCourses.push(response.data)
-    }
+    const fetchedCourses = await Promise.all(
+      userStore.user.ownedCourses.map(async (course) => {
+        const response = await axios.get(`/api/courses/${course.courseId}`)
+        return response.data
+      }),
+    )
     state.courses = fetchedCourses
   } catch (error) {
     console.error('Error fetching courses: ', error)
-    toast.error('Failed to fetch courses details')
+    toast.error('Failed to fetch course details.')
   }
+
   try {
-    const fetchedInstructors = []
-    for (const course of state.courses) {
-      const response = await axios.get(`/api/instructors/${course.instructor}`)
-      fetchedInstructors.push(response.data)
+    const response = await axios.get(`/api/requests/${userStore.user.id}`)
+    state.request = response.data
+    const days = countDays(state.request)
+    if (!days) {
+      state.request = null
     }
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      console.warn('No request found for this user.')
+      state.request = null
+    } else {
+      console.error('Error fetching request: ', error)
+    }
+  }
+
+  try {
+    const fetchedInstructors = await Promise.all(
+      state.courses.map(async (course) => {
+        const response = await axios.get(`/api/instructors/${course.instructor}`)
+        return response.data
+      }),
+    )
     state.instructors = fetchedInstructors
   } catch (error) {
-    console.error('Error fetching Instructors: ', error)
-    toast.error('Failed to fetch Instructors details')
+    console.error('Error fetching instructors: ', error)
+    toast.error('Failed to fetch instructor details.')
   }
 })
 
@@ -98,6 +112,16 @@ const signOut = async () => {
   router.push('/')
   toast.success('You have successfully signed out.')
 }
+
+function countDays(request) {
+  const lastChanged = dayjs(request.submitted)
+  const now = dayjs()
+  const diffDays = now.diff(lastChanged, 'day')
+  if (30 - diffDays > 0) {
+    console.log('HI')
+    return 30 - diffDays
+  } else return null
+}
 </script>
 
 <template>
@@ -129,6 +153,7 @@ const signOut = async () => {
           class="flex px-4 lg:px-0 w-full lg:justify-center flex-row lg:flex-col lg:items-center lg:w-1/4 space-x-2 lg:space-y-2"
         >
           <IceButton
+            v-if="!state.request"
             text="Become Instructor"
             :priority="1"
             :size="1"
@@ -141,6 +166,25 @@ const signOut = async () => {
               }
             "
           />
+          <div
+            v-else-if="state.request.status == 'Pending'"
+            class="flex gap-1 items-center text-sm lg:text-base font-medium mb-2"
+          >
+            <span class="text-gray_1">Your request is </span>
+            <span class="text-warning">Pending...</span>
+          </div>
+          <div
+            v-else-if="state.request.status == 'Rejected'"
+            class="flex flex-col gap-2 text-sm lg:text-base font-medium mb-2"
+          >
+            <div class="flex items-center gap-1">
+              <span class="text-gray_1">Your request was: </span>
+              <span class="text-danger">Rejected</span>
+            </div>
+            <span class="text-xs lg:text-sm text-gray_2 text-center"
+              >You can try again in <b>{{ countDays(state.request) }}</b> days.</span
+            >
+          </div>
           <IceButton
             text="Log out"
             :priority="4"
@@ -176,11 +220,10 @@ const signOut = async () => {
           :instructors="state.instructors.length"
         />
         <div v-else-if="selectedPage == 'Courses'">THIS IS COURSES</div>
-        <div v-else-if="selectedPage == 'Instructors'">THIS IS INSTRUCTORS</div>
-        <div v-else-if="selectedPage == 'Messages'">THIS IS MESSAGES</div>
         <UserWishlist v-else-if="selectedPage == 'Wishlist'" />
-        <div v-else-if="selectedPage == 'Purchase History'">THIS IS PURCHASE HISTORY</div>
-        <div v-else>THIS IS SETTINGS</div>
+        <div v-else>
+          <UserSettings />
+        </div>
       </div>
     </div>
 

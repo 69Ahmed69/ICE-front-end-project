@@ -12,18 +12,11 @@
       </div>
       <div class="card-item__wrapper">
         <div class="card-item__top">
-          <img
-            src="https://raw.githubusercontent.com/muhammederdem/credit-card-form/master/src/assets/images/chip.png"
-            class="card-item__chip"
-          />
+          <img src="../../public/card/chip.png" class="card-item__chip" />
           <div class="card-item__type">
             <transition name="slide-fade-up">
               <img
-                :src="
-                  'https://raw.githubusercontent.com/muhammederdem/credit-card-form/master/src/assets/images/' +
-                  cardType +
-                  '.png'
-                "
+                :src="'../../public/card/' + cardType + '.png'"
                 v-if="cardType"
                 :key="cardType"
                 alt
@@ -86,14 +79,16 @@
             <label :for="fields.cardMonth" class="card-item__dateTitle">Expires</label>
             <label :for="fields.cardMonth" class="card-item__dateItem">
               <transition name="slide-fade-up">
-                <span v-if="labels.cardMonth" :key="labels.cardMonth">{{ labels.cardMonth }}</span>
+                <span v-if="labels.cardMonth != 'Month'" :key="labels.cardMonth">{{
+                  labels.cardMonth
+                }}</span>
                 <span v-else key="2">MM</span>
               </transition>
             </label>
             /
             <label for="cardYear" class="card-item__dateItem">
               <transition name="slide-fade-up">
-                <span v-if="labels.cardYear" :key="labels.cardYear">{{
+                <span v-if="labels.cardYear != 'Year'" :key="labels.cardYear">{{
                   String(labels.cardYear).slice(2, 4)
                 }}</span>
                 <span v-else key="2">YY</span>
@@ -115,11 +110,7 @@
         </div>
         <div class="card-item__type">
           <img
-            :src="
-              'https://raw.githubusercontent.com/muhammederdem/credit-card-form/master/src/assets/images/' +
-              cardType +
-              '.png'
-            "
+            :src="'../../public/card/' + cardType + '.png'"
             v-if="cardType"
             class="card-item__typeImg"
           />
@@ -229,7 +220,7 @@ export default {
       if (this.randomBackgrounds && !this.backgroundImage) {
         // TODO will be optimized
         let random = Math.floor(Math.random() * 25 + 1)
-        return `https://raw.githubusercontent.com/muhammederdem/credit-card-form/master/src/assets/images/${random}.jpeg`
+        return `../../public/card/${random}.jpeg`
       } else if (this.backgroundImage) {
         return this.backgroundImage
       } else {

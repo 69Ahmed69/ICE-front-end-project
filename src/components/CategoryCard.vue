@@ -1,52 +1,38 @@
 <script setup>
 import { defineProps } from 'vue'
 import { RouterLink } from 'vue-router'
+import { transparentColor } from '@/utils/color'
 
 defineProps({
-  categoryName: {
-    type: String,
+  category: {
+    type: Object,
     required: true,
-  },
-  numberOfCourses: {
-    type: Number,
-    required: true,
-  },
-  icon: {
-    type: Function,
-    required: true,
-  },
-  link: {
-    type: String,
-    required: true,
-  },
-  icon_color: {
-    type: String,
-    default: 'text-font',
-  },
-  bg_color: {
-    type: String,
-    default: 'bg-white',
   },
 })
+
+// Function to convert hex to RGBA with opacity
 </script>
 
 <template>
-  <RouterLink :to="link" class="block">
+  <RouterLink :to="`/category/${category.id}`" class="block">
     <div
-      :class="`flex items-center ${bg_color} text-nowrap truncate p-4 shadow rounded-3xl space-x-4 transition-transform duration-500 hover:scale-110 hover:z-10`"
-      class="transition-shadow duration-300 ease-out hover:shadow-xl hover:bg-fourth"
+      :style="{ backgroundColor: transparentColor(category.color, 0.3) }"
+      class="flex items-center text-nowrap truncate p-4 shadow rounded-3xl space-x-4 transition-transform duration-500 hover:scale-110 hover:z-10 ease-out hover:shadow-xl"
     >
       <!-- Left: Rounded Div with Icon -->
       <div
         class="flex items-center justify-center min-w-6 min-h-6 lg:min-w-12 lg:min-h-12 bg-background rounded-full"
       >
-        <component :is="icon" :class="`w-4 lg:w-8 ${icon_color}`" />
+        <img
+          :src="`../../public/categories/${category.icon}.svg`"
+          :class="`w-4 lg:w-8 ${category.color}`"
+        />
       </div>
 
       <!-- Right: Text Content -->
       <div>
-        <p class="text-xs lg:text-base text-font font-primary">{{ categoryName }}</p>
-        <p class="text-xs lg:text-base text-gray_2">{{ numberOfCourses }} courses</p>
+        <p class="text-xs lg:text-base text-font font-primary">{{ category.name }}</p>
+        <p class="text-xs lg:text-base text-gray_2">{{ category.courses }} courses</p>
       </div>
     </div>
   </RouterLink>

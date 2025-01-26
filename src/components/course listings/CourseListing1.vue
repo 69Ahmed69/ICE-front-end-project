@@ -3,22 +3,12 @@ import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import { defineProps } from 'vue'
 import { UserIcon } from '@heroicons/vue/24/outline'
 import CourseListingHover from './CourseListingHover.vue'
+import { transparentColor } from '@/utils/color'
 
 defineProps({
   course: Object,
+  category: Object,
   instructor: Object,
-  index: {
-    type: Number,
-    default: 1,
-  },
-  category_bg: {
-    type: String,
-    default: 'bg-fourth',
-  },
-  category_text: {
-    type: String,
-    default: 'text-primary',
-  },
 })
 
 function formatStudentsCount(students) {
@@ -119,8 +109,14 @@ function daysLeft(discountEnd) {
     <div class="p-4 flex flex-col justify-between">
       <!-- First Row: Category and Price -->
       <div class="flex flex-wrap justify-between items-center text:xs lg:text-sm font-medium mb-2">
-        <span :class="`${category_bg} ${category_text} px-1 lg:px-2 py-1 text-xs rounded-full`">
-          {{ course.category }}
+        <span
+          :style="{
+            background: transparentColor(category.color, 0.2),
+            color: category.color,
+          }"
+          class="px-1 lg:px-2 py-1 text-xs rounded-full"
+        >
+          {{ category.name }}
         </span>
         <div class="space-x-1">
           <span
@@ -165,11 +161,9 @@ function daysLeft(discountEnd) {
     <!-- Hover Component -->
     <CourseListingHover
       v-if="isHovered"
-      :index="index"
       :course="course"
       :instructor="instructor"
-      :category_bg="category_bg"
-      :category_text="category_text"
+      :category="category"
       :style="hoverStyle"
       class="fixed max-w-52 lg:max-w-96 transition-opacity duration-300 ease-out opacity-0 z-50"
     />

@@ -7,6 +7,8 @@ import { useToast } from 'vue-toastification'
 import IceButton from '@/components/ui elements/IceButton.vue'
 import LoadingPopup from '@/components/popups/LoadingPopup.vue'
 import PaymentSuccessPopup from '@/components/popups/PaymentSuccessPopup.vue'
+import NavBarBottom from '@/components/navbars/NavBarBottom.vue'
+import NavBarTop from '@/components/navbars/NavBarTop.vue'
 import { emptyCart, isInCart } from '@/utils/CartUtils'
 import axios from 'axios'
 
@@ -168,6 +170,8 @@ function daysLeft(discountEnd) {
 </script>
 
 <template>
+  <NavBarTop />
+  <NavBarBottom />
   <LoadingPopup v-if="checkingOut" text="Checking out..." />
   <PaymentSuccessPopup v-if="paymentSuccess" />
   <section

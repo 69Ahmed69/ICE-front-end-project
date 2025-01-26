@@ -106,14 +106,13 @@ function checkIfOwnsCourse() {
       <div class="lg:pt-10">
         <BestSellingCourses :limit="4" title="Related Courses" titlePosition="center" />
       </div>
-
-      <FooterTop />
-      <FooterBottom />
     </div>
   </section>
   <div v-else>
     <LoadingAnimation />
   </div>
+  <FooterTop />
+  <FooterBottom />
 </template>
 
 <style scoped>

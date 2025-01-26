@@ -1,6 +1,7 @@
 <script setup>
 import { RouterView } from 'vue-router'
 import { usePrefrencesStore } from '@/stores/user'
+import axiosInstance from './axiosInstance'
 
 const preferencesStore = usePrefrencesStore()
 

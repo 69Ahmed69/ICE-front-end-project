@@ -22,6 +22,7 @@ const props = defineProps({
 const state = reactive({
   courses: [],
   instructors: [],
+  categories: {},
   isLoading: true,
 })
 
@@ -40,28 +41,37 @@ const fetchInstructors = async (courses) => {
   return Promise.all(instructorPromises)
 }
 
+const fetchCategory = async (categoryId) => {
+  try {
+    const response = await axios.get(`/api/categories/${categoryId}`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching category: ', error)
+    toast.error('Failed to fetch category details')
+    return null
+  }
+}
+
 onMounted(async () => {
   try {
     await delay(3000)
-    const response = await axios.get('/api/courses')
+    const response = await axios.get('/api/courses?experimental_ne=true')
     state.courses = response.data
 
     state.instructors = await fetchInstructors(state.courses)
+
+    const categoryPromises = state.courses.map(async (course) => {
+      const category = await fetchCategory(course.category)
+      state.categories[course.category] = category
+    })
+
+    await Promise.all(categoryPromises)
   } catch (error) {
     console.error('Error fetching courses: ', error)
   } finally {
     state.isLoading = false
   }
 })
-
-const colors = [
-  { bg_color: 'bg-secondary_trans', icon_color: 'text-secondary' },
-  { bg_color: 'bg-success_trans', icon_color: 'text-success' },
-  { bg_color: 'bg-warning_trans', icon_color: 'text-warning' },
-  { bg_color: 'bg-danger_trans', icon_color: 'text-danger' },
-  { bg_color: 'bg-fourth', icon_color: 'text-primary' },
-  { bg_color: 'bg-purple-200', icon_color: 'text-purple-900' },
-]
 
 const recentCourses = computed(() => {
   return [...state.courses]
@@ -93,11 +103,9 @@ const findInstructor = (targetId) => {
       <CourseListing
         v-for="(course, i) in recentCourses"
         :key="course.id"
-        :index="i"
         :course="course"
         :instructor="findInstructor(course.instructor)"
-        :category_bg="colors[i % colors.length].bg_color"
-        :category_text="colors[i % colors.length].icon_color"
+        :category="state.categories[course.category]"
         class="h-full"
       />
     </div>

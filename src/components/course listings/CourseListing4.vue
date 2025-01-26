@@ -2,21 +2,11 @@
 import { UserIcon } from '@heroicons/vue/24/outline'
 import { defineProps } from 'vue'
 import { RouterLink } from 'vue-router'
+import { transparentColor } from '@/utils/color'
 
 defineProps({
   course: Object,
-  index: {
-    type: Number,
-    default: 1,
-  },
-  category_bg: {
-    type: String,
-    default: 'bg-fourth',
-  },
-  category_text: {
-    type: String,
-    default: 'text-primary',
-  },
+  category: Object,
 })
 
 function formatStudentsCount(students) {
@@ -52,8 +42,14 @@ function daysLeft(discountEnd) {
         <div
           class="flex flex-wrap justify-between items-center text:xs lg:text-sm font-medium mb-2"
         >
-          <span :class="`${category_bg} ${category_text} px-1 lg:px-2 py-1 text-xs rounded-full`">
-            {{ course.category }}
+          <span
+            :style="{
+              background: transparentColor(category.color, 0.2),
+              color: category.color,
+            }"
+            class="px-1 lg:px-2 py-1 text-xs rounded-full"
+          >
+            {{ category.name }}
           </span>
           <div class="space-x-1">
             <span

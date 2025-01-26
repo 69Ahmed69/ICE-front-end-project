@@ -1,6 +1,7 @@
 <script setup>
 import IceButton from './ui elements/IceButton.vue'
 import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import {
   UsersIcon,
   ClipboardDocumentListIcon,
@@ -59,7 +60,9 @@ const nextReview = () => {
           instructors. Create a success story with 267.1k Students <br />
           — Grow yourself with 71 countries.
         </p>
-        <IceButton text="Get Started" :size="2" :priority="1" class="w-1/2" />
+        <RouterLink to="/become-an-instructor/request" class="w-full">
+          <IceButton text="Get Started" :size="2" :priority="1" class="w-1/2" />
+        </RouterLink>
       </div>
       <div class="flex items-center justify-center">
         <img

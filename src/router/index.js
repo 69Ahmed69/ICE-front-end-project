@@ -4,7 +4,7 @@ import HomeView from '@/views/HomeView.vue'
 import CoursesView from '@/views/CoursesView.vue'
 import CourseView from '@/views/CourseView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
-import CourseCategoryView from '@/views/CourseCategoryView.vue'
+import CategoryView from '@/views/CategoryView.vue'
 import InstructorView from '@/views/InstructorView.vue'
 import SignInView from '@/views/SignInView.vue'
 import SignUpView from '@/views/SignUpView.vue'
@@ -13,17 +13,32 @@ import UserProfileView from '@/views/UserProfileView.vue'
 import WatchCourseView from '@/views/WatchCourseView.vue'
 import ShoppingCartView from '@/views/ShoppingCartView.vue'
 import CheckOutView from '@/views/CheckOutView.vue'
+import Request from '@/views/RequestView.vue'
+import AdminView from '@/views/AdminView.vue'
+import ForumView from '@/views/ForumView.vue'
+import QuestionView from '@/views/QuestionView.vue'
 import { useUserStore } from '@/stores/user'
 import { useToast } from 'vue-toastification'
+import dayjs from 'dayjs'
 import axios from 'axios'
+
+const DAYS_TO_RETRY = 30
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0 }
+  },
   routes: [
     {
       path: '/',
       name: 'home',
       component: HomeView,
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: AdminView,
     },
     {
       path: '/profile',
@@ -36,9 +51,9 @@ const router = createRouter({
       component: CoursesView,
     },
     {
-      path: '/courses/:category/:subCategory?',
-      name: 'CourseCategory',
-      component: CourseCategoryView,
+      path: '/category/:categoryId',
+      name: 'Category',
+      component: CategoryView,
     },
     {
       path: '/course/:id',
@@ -71,6 +86,11 @@ const router = createRouter({
       component: BecomeInstructorView,
     },
     {
+      path: '/become-an-instructor/request',
+      name: 'request',
+      component: Request,
+    },
+    {
       path: '/sign-in',
       name: 'sign-in',
       component: SignInView,
@@ -79,6 +99,16 @@ const router = createRouter({
       path: '/sign-up',
       name: 'sign-up',
       component: SignUpView,
+    },
+    {
+      path: '/forum',
+      name: 'forum',
+      component: ForumView,
+    },
+    {
+      path: '/question',
+      name: 'question',
+      component: QuestionView,
     },
     {
       path: '/404',
@@ -128,6 +158,40 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 
+  if (to.name === 'request') {
+    if (!userStore.isSignedIn) {
+      toast.error('You have to be logged in to submit a request.')
+      return next('/')
+    }
+
+    if (userStore.isInstuctor) {
+      toast.error("You can't submit a request. You're already an instructor.")
+      return next('/')
+    }
+
+    const request = await checkRequest(userStore)
+
+    if (request) {
+      if (request.status === 'Pending') {
+        toast.info('Your request is still under review.')
+        return next('/')
+      }
+
+      if (request.status === 'Rejected') {
+        const now = dayjs()
+        const diffDays = now.diff(request.submitted, 'day')
+
+        if (diffDays < DAYS_TO_RETRY) {
+          toast.info(
+            `Your request was rejected. Please try again in ${DAYS_TO_RETRY - diffDays} days.`,
+          )
+          return next('/')
+        }
+      }
+      return next('/')
+    }
+  }
+
   if (to.name === 'watch-course') {
     const courseId = to.params.id
 
@@ -146,6 +210,23 @@ router.beforeEach(async (to, from, next) => {
 
   next() // Allow navigation
 })
+
+const checkRequest = async (userStore) => {
+  try {
+    const response = await axios.get(`/api/requests/${userStore.user.id}`, {
+      validateStatus: (status) => status < 500, // Resolve for all statuses < 500
+    })
+
+    if (response.status === 404) {
+      return null // Handle 404 explicitly
+    }
+
+    return response.data // Return data for other successful responses
+  } catch (error) {
+    console.error('An unexpected error occurred:', error) // Log unexpected errors
+    return null
+  }
+}
 
 const getCookie = (name) => {
   const cookies = document.cookie.split('; ')

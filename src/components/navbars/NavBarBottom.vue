@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted, reactive } from 'vue'
 import { RouterLink } from 'vue-router'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import IceButton from '../ui elements/IceButton.vue'
@@ -11,13 +11,23 @@ import {
   ShoppingCartIcon,
   HeartIcon,
 } from '@heroicons/vue/24/outline'
+import axios from 'axios'
 
-const menuItems = ref([
-  { name: 'Web Development', to: '/courses/category=Web%20Development' },
-  { name: 'Cyber Security', to: '/courses/category=Cyber%20Security' },
-  { name: 'Data Science', to: '/courses/category=Data%20Science' },
-  { name: 'UI-UX Development', to: '/courses/category=UI-UX%20Development' },
-])
+const state = reactive({
+  categories: [],
+  isLoading: true,
+})
+
+onMounted(async () => {
+  try {
+    const category_response = await axios.get('/api/categories')
+    state.categories = category_response.data
+  } catch (error) {
+    console.error('Error fetching data: ', error)
+  } finally {
+    state.isLoading = false
+  }
+})
 
 const userStore = useUserStore()
 const userState = computed(() => userStore.isSignedIn)
@@ -57,17 +67,21 @@ const userState = computed(() => userStore.isSignedIn)
             >
               <div class="py-1">
                 <!-- Dynamic rendering of menu items -->
-                <MenuItem v-for="(item, index) in menuItems" :key="index" v-slot="{ active }">
+                <MenuItem
+                  v-for="(category, index) in state.categories"
+                  :key="index"
+                  v-slot="{ active }"
+                >
                   <RouterLink
-                    :to="item.to"
+                    :to="`category/${category.id}`"
                     :class="[
                       active ? 'bg-fourth text-font' : 'text-gray_2',
                       'block px-3 lg:px-4 py-2 lg:py-3 text-xs lg:text-sm',
                       index === 0 ? 'rounded-t-3xl' : '',
-                      index === menuItems.length - 1 ? 'rounded-b-3xl' : '',
+                      index === state.categories.length - 1 ? 'rounded-b-3xl' : '',
                     ]"
                   >
-                    {{ item.name }}
+                    {{ category.name }}
                   </RouterLink>
                 </MenuItem>
               </div>
@@ -96,7 +110,6 @@ const userState = computed(() => userStore.isSignedIn)
             class="absolute bottom-4 left-3 size-1 lg:size-2 bg-primary rounded-full animate-ping"
           ></div>
         </button>
-        <button><HeartIcon class="icon size-5 lg:size-6 text-font hover:text-primary" /></button>
         <RouterLink to="/shopping-cart/" class="relative">
           <ShoppingCartIcon class="icon size-5 lg:size-6 text-font hover:text-primary" />
           <span

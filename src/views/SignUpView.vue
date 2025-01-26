@@ -210,6 +210,7 @@ const handleSubmit = async () => {
         expires: expiryTimestamp,
       },
       userName: userName.value,
+      lastChanged: dayjs().toISOString(),
       firstName: firstName.value,
       lastName: lastName.value,
       email: email.value,

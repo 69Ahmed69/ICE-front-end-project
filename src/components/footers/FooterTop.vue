@@ -196,7 +196,7 @@ const instructorState = computed(() => userStore.isInstuctor)
             <h3 class="text-sm lg:text-lg font-semibold">Top 4 Categories</h3>
             <ul class="text-xs lg:text-base space-y-2 lg:space-y-4 text-gray_3">
               <li v-for="(category, index) in topCategories" :key="index">
-                <RouterLink :to="category.link" class="hover:underline">
+                <RouterLink :to="category.id" class="hover:underline">
                   {{ category.name }}
                 </RouterLink>
               </li>

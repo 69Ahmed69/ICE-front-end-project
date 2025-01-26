@@ -14,6 +14,8 @@ const props = defineProps({
 
 const state = reactive({
   courses: [],
+  categories: {},
+  instructorsById: {},
   isLoading: true,
 })
 
@@ -23,38 +25,51 @@ const fetchInstructors = async (courses) => {
   const instructorPromises = courses.map(async (course) => {
     try {
       const response = await axios.get(`/api/instructors/${course.instructor}`)
-      return response.data
+      return { id: course.id, instructor: response.data }
     } catch (error) {
       console.error(`Error fetching instructor for course ${course.id}: `, error)
-      return null
+      return { id: course.id, instructor: null }
     }
   })
-  return Promise.all(instructorPromises)
+  const instructorResults = await Promise.all(instructorPromises)
+  // Map instructors by course ID
+  instructorResults.forEach(({ id, instructor }) => {
+    state.instructorsById[id] = instructor
+  })
+}
+
+const fetchCategory = async (categoryId) => {
+  try {
+    const response = await axios.get(`/api/categories/${categoryId}`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching category: ', error)
+    return null
+  }
 }
 
 onMounted(async () => {
   try {
     await delay(2000)
-    const response = await axios.get('/api/courses')
+    const response = await axios.get('/api/courses?experimental_ne=true')
     state.courses = response.data
 
-    state.instructors = await fetchInstructors(state.courses)
+    await fetchInstructors(state.courses)
+
+    // Fetch categories for each course
+    const categoryPromises = state.courses.map(async (course) => {
+      const category = await fetchCategory(course.category)
+      state.categories[course.category] = category
+    })
+
+    await Promise.all(categoryPromises)
   } catch (error) {
     console.error('Error fetching courses: ', error)
   } finally {
     state.isLoading = false
   }
 })
-const colors = [
-  { bg_color: 'bg-secondary_trans', icon_color: 'text-secondary' },
-  { bg_color: 'bg-success_trans', icon_color: 'text-success' },
-  { bg_color: 'bg-warning_trans', icon_color: 'text-warning' },
-  { bg_color: 'bg-danger_trans', icon_color: 'text-danger' },
-  { bg_color: 'bg-fourth', icon_color: 'text-primary' },
-  { bg_color: 'bg-purple-200', icon_color: 'text-purple-900' },
-]
 
-// Access limit through props
 const topCourses = computed(() => {
   return [...state.courses].sort((a, b) => b.students - a.students).slice(0, props.limit)
 })
@@ -78,13 +93,11 @@ const topCourses = computed(() => {
       style="padding: 0 1rem; min-width: 100%"
     >
       <CourseListing
-        v-for="(course, i) in topCourses"
+        v-for="course in topCourses"
         :key="course.id"
-        :index="i"
-        :instructor="state.instructors[i]"
+        :instructor="state.instructorsById[course.id]"
         :course="course"
-        :category_bg="colors[i % colors.length].bg_color"
-        :category_text="colors[i % colors.length].icon_color"
+        :category="state.categories[course.category]"
         class="h-full"
       />
     </div>

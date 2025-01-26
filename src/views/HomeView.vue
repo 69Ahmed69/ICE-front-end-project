@@ -1,7 +1,6 @@
 <script setup>
 import NavBarTop from '@/components/navbars/NavBarTop.vue'
 import NavBarBottom from '@/components/navbars/NavBarBottom.vue'
-import Hero from '@/components/Hero.vue'
 import TopCategories from '@/components/TopCategories.vue'
 import BestSellingCourses from '@/components/BestSellingCourses.vue'
 import FeatureCourses from '@/components/FeatureCourses.vue'
